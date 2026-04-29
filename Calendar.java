@@ -10,7 +10,7 @@ public class Calendar {
     }
 
     public ArrayList<Task> getTasksForDate(String date) {
-        // TODO 
+        // TODO
     }
 
     public ArrayList<Task> getTasksForWeek(String startDate) {
@@ -22,11 +22,11 @@ public class Calendar {
     }
 
     public ArrayList<Task> getOverdueTasks(String currentDate) {
-        // TODO 
+        // TODO
     }
 
     public int countTasksForDate(String date) {
-        // TODO 
+        // TODO
     }
 
 

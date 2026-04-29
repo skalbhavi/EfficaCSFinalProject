@@ -8,7 +8,7 @@ public class Comparator {
         // TODO
     }
 
-    
-
-
+    public static int compareByEstimatedTime(Task a, Task b) {
+        // TODO
+    }
 }
