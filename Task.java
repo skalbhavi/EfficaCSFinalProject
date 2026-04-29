@@ -7,15 +7,22 @@ public class Task {
     private String className; 
     private double grade; 
     private LocalDateTime dueDate; 
-    private boolean status;  
+    private boolean status;
+    private long ID;
+    private int priority;
 
-    public Task(String title, int estimatedMins, String className, double grade, LocalDateTime dueDate, boolean status) {
+    public Task(String title, int estimatedMins, String className, double grade, LocalDateTime dueDate, boolean status, int priority) {
         this.title = title; 
         this.estimatedMins = estimatedMins; 
         this.className = className; 
         this.grade = grade; 
         this.dueDate = dueDate; 
         this.status = status; 
+        ID = 0;
+        for (int i = 0; i < 10; i++) {
+            ID = ID * 10 + (int)(Math.random()*10);
+        }
+        this.priority = priority;
     }
 
     public String getTitle(){ return title;}
@@ -39,7 +46,18 @@ public class Task {
     public String toString() {
         return title  + " | Estimated Time: " + estimatedMins + " | Due: " + dueDate + "| Status: " + status ; 
     }
+
+    public long getID() {
+        return ID;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
     
+    public void setPriority(int m) {
+        this.priority = m;
+    }
 
 
 
