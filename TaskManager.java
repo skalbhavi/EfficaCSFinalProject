@@ -1,5 +1,7 @@
 import java.time.LocalDateTime;
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.Collections; 
+import java.util.Comparator;
 
 public class TaskManager {
     
@@ -71,7 +73,10 @@ public class TaskManager {
     }
 
     public ArrayList<Task> getTasksSortedBy(SortMode mode) {
-        
+        ArrayList<Task> copy = new ArrayList<Task>(tasks);
+        Comparator<Task> comparator = Comparator.getComparator(mode);
+        Collections.sort(copy, comparator);
+        return copy;
     }
 
     public void clearCompletedTasks() {
