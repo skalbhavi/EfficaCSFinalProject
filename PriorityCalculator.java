@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class PriorityCalculator {
 
@@ -22,19 +23,28 @@ public class PriorityCalculator {
      */
 
     public static int calculatePriorityScore(Task task, String currentDate) {
-        // TODO
+        return calculateDueDateScore(task, currentDate);
     }
 
     public static int daysUntilDue(Task task, String currentDate) {
-        // TODO
+        int hours = calculateDueDateScore(task, currentDate);
+
+        if (hours >= 0) {
+            return hours / 24; //int division to round down
+        } else {
+            return -1 * (( Math.abs(hours) + 23 ) / 24);
+        }
     }
 
     public static boolean isOverdue(Task task, String currentDate) {
-        // TODO
+        return calculateDueDateScore(task, currentDate) < 0;
     }
 
     int calculateDueDateScore(Task task, String currentTime) {
-        // TODO
+        LocalDateTime now = getTime(currentTime);
+        LocalDateTime due = getTime(task.getDueDate());
+
+        
     }
 
 
