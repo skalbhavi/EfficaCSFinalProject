@@ -6,7 +6,7 @@ public class WeeklyCalendar {
 
     private TaskManager taskManager; 
 
-    public Calendar(TaskManager taskManager) {
+    public WeeklyCalendar(TaskManager taskManager) {
         this.taskManager = taskManager; 
     }
 

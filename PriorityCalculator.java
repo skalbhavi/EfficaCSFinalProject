@@ -1,6 +1,7 @@
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.Duration;
 
 public class PriorityCalculator {
 
@@ -32,7 +33,7 @@ public class PriorityCalculator {
         if (hours >= 0) {
             return hours / 24; //int division to round down
         } else {
-            return -1 * (( Math.abs(hours) + 23 ) / 24);
+            return -1 * (( Math.abs(hours) + 23 ) / 24); //round up overdue days
         }
     }
 
@@ -44,10 +45,29 @@ public class PriorityCalculator {
         LocalDateTime now = getTime(currentTime);
         LocalDateTime due = getTime(task.getDueDate());
 
-        int untilDue;
+        int untilDue = Duration.between(now, due).toMinutes();
 
-        return 0;
+        if (untilDue >= 0) {
+            return (int)(untilDue / 60); //floor hours remaining
+        } else {
+            int pastDue = Math.abs(untilDue);
+            return -1 * ((pastDue + 59) / 60); //ceiling hours overdue
+        }
     }
 
+    private static LocalDateTime makeDateTime(String dateText) {
+        int year = Integer.parseInt(dateText.substring(0, 4));
+        int month = Integer.parseInt(dateText.substring(5, 7));
+        int day = Integer.parseInt(dateText.substring(8, 10));
 
+        int hour = 23;
+        int minute = 59;
+
+        if (dateText.length() >= 16) {
+            hour = Integer.parseInt(dateText.substring(11, 13));
+            minute = Integer.parseInt(dateText.substring(14, 16));
+        }
+
+        return LocalDateTime.of(year, month, day, hour, minute);
+    }
 }

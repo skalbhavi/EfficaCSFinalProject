@@ -2,10 +2,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections; 
 import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class TaskManager {
     
     private ArrayList<Task> tasks;
+
     public TaskManager() {
         tasks = new ArrayList<Task>();
     }
@@ -13,6 +15,28 @@ public class TaskManager {
     public void addTask(Task task) {
         tasks.add(task);
     }
+
+    public PriorityQueue<Task> makePriorityQueue(String currentTime) {
+        Comparator<Task> taskPriorityComparator = new Comparator<Task>() {
+
+            @Override
+            public int compare(Task a, Task b) {
+                int priorityA = PriorityCalculator.duePRTY(a, currentTime);
+                int priorityB = PriorityCalculator.duePRTY(b, currentTime);
+
+                return Integer.compare(priorityA, priorityB);
+            }
+        };
+    }
+
+    PriorityQueue<Task> pq = new PriorityQueue<Task>(taskPriorityComparator);
+
+    for (Task task : tasks) {
+        if (!task.isCompleted()) {
+            pq.add(task);
+        }
+    }
+
 
     public boolean removeTask(long taskID) {
         for (Task task : tasks) {
