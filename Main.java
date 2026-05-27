@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        // TODO
+        Controller controller = new Controller();
+        new EfficaUI(controller);
     }
 }
