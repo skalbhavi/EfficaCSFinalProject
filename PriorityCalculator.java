@@ -22,12 +22,12 @@ public class PriorityCalculator {
         ascending order from overdue, due soon, due later
      */
 
-    public static int calculatePriorityScore(Task task, String currentDate) {
-        return calculateDueDateScore(task, currentDate);
+    public static int duePRTY(Task task, String currentDate) {
+        return dueScore(task, currentDate);
     }
 
-    public static int daysUntilDue(Task task, String currentDate) {
-        int hours = calculateDueDateScore(task, currentDate);
+    public static int untilDue(Task task, String currentDate) {
+        int hours = dueScore(task, currentDate);
 
         if (hours >= 0) {
             return hours / 24; //int division to round down
@@ -37,14 +37,16 @@ public class PriorityCalculator {
     }
 
     public static boolean isOverdue(Task task, String currentDate) {
-        return calculateDueDateScore(task, currentDate) < 0;
+        return dueScore(task, currentDate) < 0;
     }
 
-    int calculateDueDateScore(Task task, String currentTime) {
+    public static int dueScore(Task task, String currentTime) {
         LocalDateTime now = getTime(currentTime);
         LocalDateTime due = getTime(task.getDueDate());
 
-        
+        int untilDue;
+
+        return 0;
     }
 
 
