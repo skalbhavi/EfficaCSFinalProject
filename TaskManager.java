@@ -27,17 +27,45 @@ public class TaskManager {
                 return Integer.compare(priorityA, priorityB);
             }
         };
-    }
 
-    PriorityQueue<Task> pq = new PriorityQueue<Task>(taskPriorityComparator);
+        PriorityQueue<Task> pq = new PriorityQueue<Task>(taskPriorityComparator));
 
-    for (Task task : tasks) {
-        if (!task.isCompleted()) {
-            pq.add(task);
+        for (Task task : tasks) {
+            if (!task.getStatus()) {
+                pq.add(task);
+            }
         }
+
+        return pq;
+
     }
 
+    public Task getHighestPriorityTask(String currentTime) {
+        PriorityQueue<Task> pq = makePriorityQueue(currentTime);
 
+        if (pq.isEmpty()) {
+            return null;
+        }
+
+        return pq.peek();
+    }
+
+    public ArrayList<Task> getTasksByPriority(String currentTime) {
+        PriorityQueue<Task> pq = makePriorityQueue(currentTime);
+        ArrayList<Task> sortedTasks = new ArrayList<Task>();
+
+        while (!pq.isEmpty()) {
+            sortedTasks.add(pq.poll());
+        }
+
+        return sortedTasks;
+    }
+
+}
+
+
+
+/*
     public boolean removeTask(long taskID) {
         for (Task task : tasks) {
             if (task.getID() == taskID) {
@@ -112,7 +140,4 @@ public class TaskManager {
     public int size() {
         return tasks.size();
     }
-
-
-
-}
+*/

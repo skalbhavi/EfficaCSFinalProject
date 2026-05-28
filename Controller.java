@@ -16,6 +16,7 @@ public class Controller {
     public void addTask(String title, int estimatedMins, String className, double grade, LocalDateTime dueDate, boolean status, int priority) {
         Task task = new Task(title, estimatedMins, className, grade, dueDate, status, priority);
         taskManager.addTask(task);
+        timer = new Timer(25, 5);
     }
 
 
@@ -37,5 +38,9 @@ public class Controller {
 
     public ArrayList<Task> getTasksSortedBy(SortMode mode) {
         return taskManager.getTasksSortedBy(mode);
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 }
