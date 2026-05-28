@@ -31,15 +31,44 @@ public class WeeklyCalendar {
 
 
     public ArrayList<Task> getTasksForDate(String date) {
-        // TODO
+      
+        ArrayList<Task> targetResult = new ArrayList<Task>();
+        LocalDateTime targetDate = makeDateTime(date);
+
+        for (Task task: taskManager.getAllTasks()) {
+            LocalDateTime due = task.getDueDate(); 
+
+            if(due.getYear() == targetDate.getYear() && due.getMonthValue() == targetDate.getMonthValue() && due.getDayOfMonth() == targetDate.getDayOfMonth()) {
+                targetResult.add(task); 
+            }
+        }
+        return targetResult; 
+
+
     }
 
     public ArrayList<Task> getTasksForWeek(String startDate) {
-        // TODO
+
+        ArrayList<Task> result = new ArrayList<Task>();
+        LocalDateTime start = makeDateTime(startDate);
+        LocalDateTime end = start.plusDays(7);
+
+        for(Task task: taskManager.getAllTasks()) {
+            LocalDateTime due = task.getDueDate(); 
+            boolean afterStart = due.isEqual(start) || due.isAfter(start); 
+            boolean beforeEnd = due.isBefore(end); 
+
+            if(afterStart && beforeEnd) {
+                result.add(task); 
+            }
+
+        }
+        return result; 
     }
 
     public ArrayList<Task> getTodayTasks(String currentDate) {
-        // TODO
+       
+        return getTasksForDate(currentDate); 
     }
 
     public ArrayList<Task> getOverdueTasks(String currentDate) {
@@ -47,7 +76,8 @@ public class WeeklyCalendar {
     }
 
     public int countTasksForDate(String date) {
-        // TODO
+
+        return getTasksForDate(date).size(); 
     }
 
 }
