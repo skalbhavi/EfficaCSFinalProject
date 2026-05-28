@@ -72,7 +72,19 @@ public class WeeklyCalendar {
     }
 
     public ArrayList<Task> getOverdueTasks(String currentDate) {
-        // TODO
+    
+        ArrayList<Task> overdue = new ArrayList<Task>();
+        LocalDateTime current = makeDateTime(currentDate); 
+
+        for(Task task : taskManager.getAllTasks()) {
+            LocalDateTime due = task.getDueDate(); 
+
+            if(due.isBefore(current) && !task.getStatus()) {
+                overdue.add(task); 
+            }
+        }
+        return overdue; 
+
     }
 
     public int countTasksForDate(String date) {
