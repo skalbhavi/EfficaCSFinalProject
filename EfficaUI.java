@@ -109,19 +109,16 @@ public class EfficaUI extends JFrame {
         JTextField grade = new JTextField();
         JTextField priority = new JTextField();
 
-        dialog.add(new JLabel("Title"));
+        dialog.add(new JLabel("Assignment Name"));
         dialog.add(title);
 
-        dialog.add(new JLabel("Class"));
-        dialog.add(course);
-
-        dialog.add(new JLabel("Estimated Minutes"));
+        dialog.add(new JLabel("Estimated Completion Time"));
         dialog.add(mins);
 
-        dialog.add(new JLabel("Grade"));
+        dialog.add(new JLabel("Class Grade"));
         dialog.add(grade);
 
-        dialog.add(new JLabel("Priority"));
+        dialog.add(new JLabel("Importance: 1 = low priority; 5 = high priority"));
         dialog.add(priority);
 
         JButton save = new JButton("Save Task");
