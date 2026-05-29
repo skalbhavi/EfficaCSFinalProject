@@ -10,6 +10,7 @@ public class Controller {
     private User currentUser;
     private SortMode currentSortMode;
     private String currentDate;
+    private Task activeTask;
     
     public Controller() {
         taskManager = new TaskManager();
@@ -25,6 +26,14 @@ public class Controller {
         Task task = new Task(title, estimatedMins, className, grade, dueDate, status, priority);
         taskManager.addTask(task);
         timer = new Timer(25, 5);
+    }
+
+    public void setActiveTask(Task task) {
+        this.activeTask = task;
+    }
+
+    public Task getActiveTask() {
+        return activeTask;
     }
 
 

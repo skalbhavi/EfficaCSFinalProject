@@ -78,6 +78,14 @@ public class Task {
         this.priority = m;
     }
 
+    public void increasePriority() {
+        priority++;
+    }
+
+    public void decreasePriority() {
+        priority--;
+    }
+
 
 
 }
