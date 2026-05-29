@@ -26,8 +26,8 @@ public class Controller {
         return taskManager;
     }
     
-    public void addTask(String title, int estimatedMins, String className, double grade, LocalDateTime dueDate, boolean status, int priority) {
-        Task task = new Task(title, estimatedMins, className, grade, dueDate, status, priority);
+    public void addTask(String title, int estimatedMins, double grade, LocalDateTime dueDate, boolean status, int priority) {
+        Task task = new Task(title, estimatedMins, grade, dueDate, status, priority);
         taskManager.addTask(task);
     }
 
@@ -35,8 +35,8 @@ public class Controller {
         return taskManager.removeTask(taskID);
     }
 
-    public boolean editTask(long taskId, String newTitle, String newCourse, int newMinutes, LocalDateTime newDueDate, double newGrade, int newPriority) {
-        return taskManager.editTask(taskId, newTitle, newCourse, newMinutes, newDueDate, newGrade, newPriority);
+    public boolean editTask(long taskId, String newTitle, int newMinutes, LocalDateTime newDueDate, double newGrade, int newPriority) {
+        return taskManager.editTask(taskId, newTitle, newMinutes, newDueDate, newGrade, newPriority);
     }
 
     public boolean markTaskComplete(long taskID) {

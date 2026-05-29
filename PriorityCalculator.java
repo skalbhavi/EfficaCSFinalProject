@@ -56,11 +56,11 @@ public class PriorityCalculator {
     /////////////////////////
     
     public static int gradePRTY(Task task) {
-        return (int) task.getGrade();
+        return (int) task.getClassGrade();
     }
 
     public static int timePRTY(Task task) {
-        return -1 * task.getEstimatedMins();
+        return -1 * task.getEstimatedTime();
     }
 
     public static int customPRTY(Task task) {

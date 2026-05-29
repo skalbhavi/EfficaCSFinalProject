@@ -110,12 +110,13 @@ public class EfficaUI extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setOpaque(false);
 
-        JLabel title = new JLabel(t.getTitle());
+//        JLabel title = new JLabel(t.getTitle());
+        JLabel title = new JLabel(t.getAssignmentName());
         title.setForeground(TEXT);
         title.setFont(new Font("SansSerif", Font.BOLD, 16));
 
         JLabel info = new JLabel(
-            t.getClassName() + " | " + t.getEstimatedMins() + " min | Due: " + t.getDueDate()
+            t.getClassGrade() + " | " + t.getEstimatedTime() + " min | Due: " + t.getDueDate()
         );
         info.setForeground(new Color(180, 180, 180));
 
@@ -228,7 +229,6 @@ public class EfficaUI extends JFrame {
                 controller.addTask(
                     title.getText(),
                     Integer.parseInt(mins.getText()),
-                    course.getText(),
                     Double.parseDouble(grade.getText()),
                     LocalDateTime.parse(dueField.getText().trim()),
                     false,

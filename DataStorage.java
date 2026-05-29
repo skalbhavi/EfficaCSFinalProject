@@ -45,10 +45,9 @@ public class DataStorage {
 
     public static String taskToFileString(Task task) {
 
-        return task.getTitle() + ";" +
-        task.getEstimatedMins() + ";" +
-        task.getClassName() + ";" +
-        task.getGrade() + ";" +
+        return task.getAssignmentName() + ";" +
+        task.getEstimatedTime() + ";" +
+        task.getClassGrade() + ";" +
         task.getDueDate() + ";" +
         task.getStatus() + ";" +
         task.getPriority() + ";" +
@@ -70,7 +69,6 @@ public class DataStorage {
 
         return new Task(title,
                         estimatedMins,
-                        className,
                         grade,
                         dueDate,
                         status,

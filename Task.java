@@ -2,20 +2,18 @@ import java.time.LocalDateTime;
 
 public class Task {
 
-    private String title; 
-    private int estimatedMins; 
-    private String className; 
-    private double grade; 
+    private String assignmentName; 
+    private int estimatedTime; 
+    private double ClassGrade; 
     private LocalDateTime dueDate; 
     private boolean status;
     private long ID;
     private int priority;
 
-    public Task(String title, int estimatedMins, String className, double grade, LocalDateTime dueDate, boolean status, int priority) {
-        this.title = title; 
-        this.estimatedMins = estimatedMins; 
-        this.className = className; 
-        this.grade = grade; 
+    public Task(String name, int estimatedMins, double grade, LocalDateTime dueDate, boolean status, int priority) {
+        this.assignmentName = name; 
+        this.estimatedTime = estimatedMins; 
+        this.ClassGrade = grade; 
         this.dueDate = dueDate; 
         this.status = status; 
         ID = 0;
@@ -27,34 +25,29 @@ public class Task {
 
     public Task(String title,
             int estimatedMins,
-            String className,
-            double grade,
+            double classGrade,
             LocalDateTime dueDate,
             boolean status,
             int priority,
             long ID) {
 
-        this.title = title;
-        this.estimatedMins = estimatedMins;
-        this.className = className;
-        this.grade = grade;
+        this.assignmentName = title;
+        this.estimatedTime = estimatedMins;
+        this.ClassGrade = classGrade;
         this.dueDate = dueDate;
         this.status = status;
         this.priority = priority;
         this.ID = ID;
     }
 
-    public String getTitle(){ return title;}
-    public void setTitle(String title) {this.title = title;} 
+    public String getAssignmentName(){ return assignmentName;}
+    public void setAssignmentName(String title) {this.assignmentName = title;} 
 
-    public int getEstimatedMins() {return estimatedMins;}
-    public void setEstimatedMins(int estimatedMins) {this.estimatedMins = estimatedMins;}
+    public int getEstimatedTime() {return estimatedTime;}
+    public void setEstimatedTime(int estimatedMins) {this.estimatedTime = estimatedMins;}
 
-    public String getClassName() {return className;}
-    public void setClassName(String className) {this.className = className;}
-
-    public double getGrade() {return grade;}
-    public void setGrade(double grade) {this.grade = grade;}
+    public double getClassGrade() {return ClassGrade;}
+    public void setClassGrade(double grade) {this.ClassGrade = grade;}
 
     public LocalDateTime getDueDate() {return dueDate;}
     public void setDueDate(LocalDateTime dueDate) {this.dueDate = dueDate;}
@@ -63,7 +56,7 @@ public class Task {
     public void setStatus(boolean status) {this.status = status;}
 
     public String toString() {
-        return title  + " | Estimated Time: " + estimatedMins + " | Due: " + dueDate + "| Status: " + status ; 
+        return assignmentName  + " | Estimated Time: " + estimatedTime + " | Due: " + dueDate + "| Status: " + status ; 
     }
 
     public long getID() {

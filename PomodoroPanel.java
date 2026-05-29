@@ -38,7 +38,7 @@ class PomodoroPanel extends JPanel {
 
                 Task active = controller.getActiveTask();
                 if (active != null) {
-                    taskLabel.setText("Working on: " + active.getTitle());
+                    taskLabel.setText("Working on: " + active.getAssignmentName());
                 }
             });
 
