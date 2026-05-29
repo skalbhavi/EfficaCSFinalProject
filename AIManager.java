@@ -19,7 +19,7 @@ public class AIManager {
             context.append("Here is the user's current task list:\n");
             
             for (Task t : tasks) {
-                context.append(String.format("- %s (Due: %s, Class: %s, Priority: %d/5)\n", 
+                context.append(String.format("- %s (Class: %s, Due: %s, Priority: %d/5)\n", 
                     t.getTaskName(), t.getDueDate(), t.getPriority()));
             }
 
