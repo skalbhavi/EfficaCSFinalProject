@@ -20,7 +20,7 @@ public class AIManager {
             
             for (Task t : tasks) {
                 context.append(String.format("- %s (Class: %s, Due: %s, Priority: %d/5)\n", 
-                    t.getTitle(), t.getClassName(), t.getDueDate(), t.getPriority()));
+                    t.getAssignmentName(), t.getDueDate(), t.getPriority()));
             }
 
             context.append("\nUser Question: ").append(userPrompt);

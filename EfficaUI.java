@@ -110,7 +110,6 @@ public class EfficaUI extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setOpaque(false);
 
-//        JLabel title = new JLabel(t.getTitle());
         JLabel title = new JLabel(t.getAssignmentName());
         title.setForeground(TEXT);
         title.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -150,50 +149,63 @@ public class EfficaUI extends JFrame {
     }
 
     private void openEditDialog(Task t) {
+
         JDialog dialog = new JDialog(this, "Edit Task", true);
         dialog.setSize(350, 450);
         dialog.setLayout(new GridLayout(0, 1));
 
-        JTextField title = new JTextField(t.getTitle());
-        JTextField course = new JTextField(t.getClassName());
-        JTextField mins = new JTextField(String.valueOf(t.getEstimatedMins()));
-        JTextField grade = new JTextField(String.valueOf(t.getGrade()));
-        JTextField priority = new JTextField(String.valueOf(t.getPriority()));
+        JTextField title = new JTextField(t.getAssignmentName());
+        JTextField mins = new JTextField("" + t.getEstimatedTime());
+        JTextField grade = new JTextField("" + t.getClassGrade());
+        JTextField priority = new JTextField("" + t.getPriority());
         JTextField dueField = new JTextField(t.getDueDate().toString());
 
-        dialog.add(new JLabel(" Assignment Name"));
+        dialog.add(new JLabel("Assignment Name"));
         dialog.add(title);
-        dialog.add(new JLabel(" Class Name"));
-        dialog.add(course);
-        dialog.add(new JLabel(" Estimated Minutes"));
+
+        dialog.add(new JLabel("Estimated Minutes"));
         dialog.add(mins);
-        dialog.add(new JLabel(" Current Grade (%)"));
+
+        dialog.add(new JLabel("Current Grade (%)"));
         dialog.add(grade);
-        dialog.add(new JLabel(" Priority (1-5)"));
+
+        dialog.add(new JLabel("Priority (1-5)"));
         dialog.add(priority);
-        dialog.add(new JLabel(" Due Date (YYYY-MM-DDTHH:MM)"));
+
+        dialog.add(new JLabel("Due Date (YYYY-MM-DDTHH:MM)"));
         dialog.add(dueField);
 
         JButton save = new JButton("Save Changes");
+
         save.addActionListener(e -> {
+
             try {
+
                 controller.editTask(
                     t.getID(),
                     title.getText(),
-                    course.getText(),
                     Integer.parseInt(mins.getText()),
                     LocalDateTime.parse(dueField.getText().trim()),
                     Double.parseDouble(grade.getText()),
                     Integer.parseInt(priority.getText())
                 );
+
                 dialog.dispose();
                 refreshTasks();
+
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(dialog, "Error: Check your formats!");
+
+                JOptionPane.showMessageDialog(
+                    dialog,
+                    "Error: Check your formats!"
+                );
+
             }
+
         });
 
         dialog.add(save);
+
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }

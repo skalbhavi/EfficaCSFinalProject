@@ -13,7 +13,7 @@ public class Controller {
     private WeeklyCalendar calendar;
     private Task activeTask;
     
-    private final String API_KEY = "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";
+    private final String API_KEY = "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";
     private final String API_URL = "https://api.groq.com/openai/v1/chat/completions";
     
     public Controller() {
@@ -82,8 +82,7 @@ public class Controller {
             context.append("Current tasks: ");
             
             for (Task t : taskManager.getAllTasks()) {
-                context.append(String.format("[%s, Class: %s, Priority: %d, Grade: %.1f%%] ", 
-                    t.getTitle(), t.getClassName(), t.getPriority(), t.getGrade()));
+                    context.append(String.format("[%s, Priority: %d, Grade: %.1f%%] ", t.getAssignmentName(), t.getPriority(), t.getClassGrade()));
             }
             context.append(". User question: ").append(userPrompt);
 
