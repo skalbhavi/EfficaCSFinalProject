@@ -122,13 +122,19 @@ public class Controller {
         try {
             String cleanJson = json.replace("\\n", "\n");
 
-            String targetMarker = "\"content\":\"";
+            String targetMarker = "\"content\":";
             String compactJson = cleanJson.replaceAll("\\s+(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", "");
 
             if (compactJson.contains(targetMarker)) {
                 int start = compactJson.indexOf(targetMarker) + targetMarker.length();
+
+                while (compactJson.charAt(start) != '"') {
+                    start++;
+                }
+                start++;
+
                 int end = compactJson.indexOf("\"", start);
-                
+
                 String extracted = compactJson.substring(start, end);
                 
                 return extracted.replace("\\\"", "\"")
