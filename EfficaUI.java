@@ -112,6 +112,9 @@ public class EfficaUI extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setOpaque(false);
 
+        JMenuItem focusItem = new JMenuItem("Set as Pomodoro Task");
+        focusItem.addActionListener(e -> controller.setActiveTask(t));
+
         boolean overdue = PriorityCalculator.isOverdue(t, getTimeString()) && !t.getStatus();
         String labelText = t.getTaskName();
         if (overdue) {
@@ -126,7 +129,9 @@ public class EfficaUI extends JFrame {
         taskName.setFont(new Font("SansSerif", Font.BOLD, 16));
 
         JLabel info = new JLabel(
-            t.getClassGrade() + " | " + t.getEstimatedTime() + " min | Due: " + t.getDueDate()
+            t.getClassGrade() + " | " + 
+            t.getEstimatedTime() + " min | Due: " + 
+            t.getDueDate().toString().substring(0,10) + " " + t.getDueDate().toString().substring(10,16)
         );
         info.setForeground(new Color(180, 180, 180));
 
@@ -144,6 +149,7 @@ public class EfficaUI extends JFrame {
             refreshTasks();
         });
 
+        menu.add(focusItem);
         menu.add(editItem);
         menu.add(deleteItem);
 
