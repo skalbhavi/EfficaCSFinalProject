@@ -1,6 +1,7 @@
 public enum SortMode {
     DUE_DATE,
     GRADE,
-    ESTIMATED_TIME,
+    ESTIMATED_TIME_LONG_FIRST,
+    ESTIMATED_TIME_SHORT_FIRST,
     CUSTOM
 }

@@ -44,8 +44,9 @@ public class EfficaUI extends JFrame {
             currentSort = switch (i) {
                 case 0 -> SortMode.DUE_DATE;
                 case 1 -> SortMode.GRADE;
-                case 2 -> SortMode.ESTIMATED_TIME;
-                case 3 -> SortMode.CUSTOM;
+                case 2 -> SortMode.ESTIMATED_TIME_LONG_FIRST;
+                case 3 -> SortMode.ESTIMATED_TIME_SHORT_FIRST;
+                case 4 -> SortMode.CUSTOM;
                 default -> SortMode.DUE_DATE;
             };
             refreshTasks();

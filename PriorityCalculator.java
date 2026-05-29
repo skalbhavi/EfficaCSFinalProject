@@ -59,7 +59,11 @@ public class PriorityCalculator {
         return (int) task.getClassGrade();
     }
 
-    public static int timePRTY(Task task) {
+    public static int longTimePRTY(Task task) {
+        return -1 * task.getEstimatedTime();
+    }
+
+    public static int shortTimePRTY(Task task) {
         return -1 * task.getEstimatedTime();
     }
 

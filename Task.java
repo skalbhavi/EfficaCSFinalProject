@@ -49,7 +49,7 @@ public class Task {
     public int getEstimatedTime() {return estimatedTime;}
     public void setEstimatedTime(int estimatedTime) {this.estimatedTime = estimatedTime;}
 
-    public double getClassGrade() {return classGrade;}
+    public int getClassGrade() {return classGrade;}
     public void setClassGrade(int classGrade) {this.classGrade = classGrade;}
 
     public boolean getStatus() {return status;}
