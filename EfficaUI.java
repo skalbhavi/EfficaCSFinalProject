@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.time.LocalDateTime;
 import javax.swing.*;
 
@@ -161,17 +160,12 @@ public class EfficaUI extends JFrame {
     }
 
     private JPanel createTaskCard(Task t) {
+
         JPanel card = new RoundedPanel(20);
         card.setLayout(new BorderLayout());
+        card.setBackground(CARD);
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
         card.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-
-        // ===== ACTIVE TASK HIGHLIGHT =====
-        if (controller.getActiveTask() == t) {
-            card.setBackground(new Color(60, 60, 90));
-        } else {
-            card.setBackground(CARD);
-        }
 
         JLabel title = new JLabel(t.getTitle());
         title.setForeground(TEXT);
@@ -182,70 +176,13 @@ public class EfficaUI extends JFrame {
             " | " +
             t.getEstimatedMins() +
             " min | Due: " +
-            t.getDueDate() + 
-            " | Priority: " + t.getPriority()
+            t.getDueDate()
         );
+
         info.setForeground(new Color(180, 180, 180));
 
         card.add(title, BorderLayout.NORTH);
         card.add(info, BorderLayout.SOUTH);
-
-        // ===== DRAG & CLICK HANDLER =====
-        MouseAdapter mouseHandler = new MouseAdapter() {
-            private Point startPoint;
-            private boolean isDragging = false;
-            private final int DRAG_THRESHOLD = 15; // Pixels to move before it counts as a drag
-
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent e) {
-                startPoint = e.getPoint();
-                isDragging = false;
-            }
-
-            @Override
-            public void mouseDragged(java.awt.event.MouseEvent e) {
-                if (startPoint == null) return;
-
-                int dy = e.getY() - startPoint.y;
-
-                // If moved beyond threshold, mark as dragging and change cursor
-                if (Math.abs(dy) > DRAG_THRESHOLD) {
-                    isDragging = true;
-                    card.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
-                }
-            }
-
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent e) {
-                card.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                
-                if (startPoint == null) return;
-
-                if (isDragging) {
-                    int dy = e.getY() - startPoint.y;
-                    
-                    // DRAG LOGIC: Up decreases priority (higher on list), Down increases
-                    if (dy < 0) {
-                        t.setPriority(t.getPriority() + 1);
-                    } else {
-                        t.setPriority(t.getPriority() - 1);
-                    }
-                    refreshTasks();
-                } else {
-                    // CLICK LOGIC: Open edit dialog
-                    controller.setActiveTask(t);
-                    refreshTasks(); // Update highlight
-                    openEditDialog(t);
-                }
-
-                startPoint = null;
-                isDragging = false;
-            }
-        };
-
-        // REGISTER TO BOTH LISTENER TYPES
-        card.addMouseListener(mouseHandler);
-        card.addMouseMotionListener(mouseHandler);
 
         return card;
     }
@@ -278,51 +215,5 @@ public class EfficaUI extends JFrame {
 
             super.paintComponent(g);
         }
-    }
-
-    private void openEditDialog(Task t) {
-
-        JDialog dialog = new JDialog(this, "Edit Task", true);
-        dialog.setSize(350, 300);
-        dialog.setLayout(new GridLayout(0, 1));
-
-        JTextField title = new JTextField(t.getTitle());
-        JTextField course = new JTextField(t.getClassName());
-        JTextField mins = new JTextField(String.valueOf(t.getEstimatedMins()));
-        JTextField grade = new JTextField(String.valueOf(t.getGrade()));
-        JTextField priority = new JTextField(String.valueOf(t.getPriority()));
-
-        dialog.add(new JLabel("Title"));
-        dialog.add(title);
-
-        dialog.add(new JLabel("Class"));
-        dialog.add(course);
-
-        dialog.add(new JLabel("Minutes"));
-        dialog.add(mins);
-
-        dialog.add(new JLabel("Grade"));
-        dialog.add(grade);
-
-        dialog.add(new JLabel("Priority"));
-        dialog.add(priority);
-
-        JButton save = new JButton("Save Changes");
-
-        save.addActionListener(e -> {
-            t.setTitle(title.getText());
-            t.setClassName(course.getText());
-            t.setEstimatedMins(Integer.parseInt(mins.getText()));
-            t.setGrade(Double.parseDouble(grade.getText()));
-            t.setPriority(Integer.parseInt(priority.getText()));
-
-            dialog.dispose();
-            refreshTasks();
-        });
-
-        dialog.add(save);
-
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
     }
 }
