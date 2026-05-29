@@ -6,8 +6,8 @@ public class EfficaUI extends JFrame {
 
     private Controller controller;
     private JPanel taskPanel;
-    private JTabbedPane tabs;           // The container for your tabs
-    private CalendarPanel calendarView; // The specific reference to your calendar
+    private JTabbedPane tabs;            
+    private CalendarPanel calendarView; 
 
     private SortMode currentSort = SortMode.DUE_DATE;
 
@@ -25,7 +25,6 @@ public class EfficaUI extends JFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(BG);
 
-        // ===== 1. TOP BAR SETUP =====
         JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topBar.setBackground(BG);
         topBar.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -57,10 +56,8 @@ public class EfficaUI extends JFrame {
         topBar.add(sortBox);
         add(topBar, BorderLayout.NORTH);
 
-        // ===== 2. TAB SETUP (THE ORDER MATTERS HERE) =====
         tabs = new JTabbedPane();
 
-        // A. Tasks Tab (Index 0)
         taskPanel = new JPanel();
         taskPanel.setLayout(new BoxLayout(taskPanel, BoxLayout.Y_AXIS));
         taskPanel.setBackground(BG);
@@ -69,17 +66,14 @@ public class EfficaUI extends JFrame {
         scrollPane.getViewport().setBackground(BG);
         tabs.addTab("Tasks", scrollPane);
 
-        // B. Pomodoro Tab (Index 1)
         tabs.addTab("Pomodoro", new PomodoroPanel(controller));
 
-        // C. Calendar Tab (Index 2 - The Last Spot)
-        // We only add it ONCE here to avoid duplicates
+        tabs.addTab("AI Assistant", new ChatPanel(controller));
         this.calendarView = new CalendarPanel(controller);
         tabs.addTab("Calendar", calendarView);
 
         add(tabs, BorderLayout.CENTER);
 
-        // ===== 3. FINAL INITIALIZATION =====
         refreshTasks();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -92,13 +86,11 @@ public class EfficaUI extends JFrame {
     private void refreshTasks() {
         taskPanel.removeAll();
 
-        // Refresh Task List
         for (Task t : controller.getTasksSortedBy(currentSort, getTimeString())) {
             taskPanel.add(createTaskCard(t));
             taskPanel.add(Box.createVerticalStrut(10));
         }
 
-        // IMPORTANT: Refresh Calendar View
         if (calendarView != null) {
             calendarView.refreshCalendar();
         }
@@ -114,6 +106,10 @@ public class EfficaUI extends JFrame {
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
         card.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setOpaque(false);
+
         JLabel title = new JLabel(t.getTitle());
         title.setForeground(TEXT);
         title.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -123,10 +119,82 @@ public class EfficaUI extends JFrame {
         );
         info.setForeground(new Color(180, 180, 180));
 
-        card.add(title, BorderLayout.NORTH);
-        card.add(info, BorderLayout.SOUTH);
+        infoPanel.add(title);
+        infoPanel.add(info);
+        card.add(infoPanel, BorderLayout.CENTER);
+
+        JPopupMenu menu = new JPopupMenu();
+        JMenuItem editItem = new JMenuItem("Edit Task");
+        JMenuItem deleteItem = new JMenuItem("Delete Task");
+
+        editItem.addActionListener(e -> openEditDialog(t));
+        deleteItem.addActionListener(e -> {
+            controller.removeTask(t.getID());
+            refreshTasks();
+        });
+
+        menu.add(editItem);
+        menu.add(deleteItem);
+
+        card.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                if (e.isPopupTrigger()) menu.show(e.getComponent(), e.getX(), e.getY());
+            }
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+                if (e.isPopupTrigger()) menu.show(e.getComponent(), e.getX(), e.getY());
+            }
+        });
 
         return card;
+    }
+
+    private void openEditDialog(Task t) {
+        JDialog dialog = new JDialog(this, "Edit Task", true);
+        dialog.setSize(350, 450);
+        dialog.setLayout(new GridLayout(0, 1));
+
+        JTextField title = new JTextField(t.getTitle());
+        JTextField course = new JTextField(t.getClassName());
+        JTextField mins = new JTextField(String.valueOf(t.getEstimatedMins()));
+        JTextField grade = new JTextField(String.valueOf(t.getGrade()));
+        JTextField priority = new JTextField(String.valueOf(t.getPriority()));
+        JTextField dueField = new JTextField(t.getDueDate().toString());
+
+        dialog.add(new JLabel(" Assignment Name"));
+        dialog.add(title);
+        dialog.add(new JLabel(" Class Name"));
+        dialog.add(course);
+        dialog.add(new JLabel(" Estimated Minutes"));
+        dialog.add(mins);
+        dialog.add(new JLabel(" Current Grade (%)"));
+        dialog.add(grade);
+        dialog.add(new JLabel(" Priority (1-5)"));
+        dialog.add(priority);
+        dialog.add(new JLabel(" Due Date (YYYY-MM-DDTHH:MM)"));
+        dialog.add(dueField);
+
+        JButton save = new JButton("Save Changes");
+        save.addActionListener(e -> {
+            try {
+                controller.editTask(
+                    t.getID(),
+                    title.getText(),
+                    course.getText(),
+                    Integer.parseInt(mins.getText()),
+                    LocalDateTime.parse(dueField.getText().trim()),
+                    Double.parseDouble(grade.getText()),
+                    Integer.parseInt(priority.getText())
+                );
+                dialog.dispose();
+                refreshTasks();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(dialog, "Error: Check your formats!");
+            }
+        });
+
+        dialog.add(save);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
 
     private void openTaskDialog() {

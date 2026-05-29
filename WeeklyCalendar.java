@@ -14,17 +14,15 @@ public class WeeklyCalendar {
         if (dateText == null || dateText.isBlank()) return null;
 
         try {
-            // Try the standard YYYY-MM-DD first
             return LocalDate.parse(dateText);
         } catch (DateTimeParseException e) {
             try {
-                // Fallback: Manually split to handle single digits (e.g., 2026-5-2)
                 String[] parts = dateText.split("-");
                 if (parts.length == 3) {
                     return LocalDate.of(
-                        Integer.parseInt(parts[0]), // Year
-                        Integer.parseInt(parts[1]), // Month
-                        Integer.parseInt(parts[2])  // Day
+                        Integer.parseInt(parts[0]),
+                        Integer.parseInt(parts[1]),
+                        Integer.parseInt(parts[2]) 
                     );
                 }
             } catch (Exception ex) {
