@@ -4,160 +4,205 @@ import javax.swing.*;
 
 public class EfficaUI extends JFrame {
 
-private Controller controller;
-private JPanel taskPanel;
-private JTextField taskInput;
+    private Controller controller;
+    private JPanel taskPanel;
 
-private final Color BG = new Color(18, 18, 18);
-private final Color CARD = new Color(32, 32, 32);
-private final Color ACCENT = new Color(120, 140, 255);
-private final Color TEXT = new Color(240, 240, 240);
+    private SortMode currentSort = SortMode.NONE;
 
-public EfficaUI(Controller controller) {
-    this.controller = controller;
+    private final Color BG = new Color(18, 18, 18);
+    private final Color CARD = new Color(32, 32, 32);
+    private final Color ACCENT = new Color(120, 140, 255);
+    private final Color TEXT = new Color(240, 240, 240);
 
-    setTitle("Effica");
-    setSize(700, 500);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setLayout(new BorderLayout());
+    public EfficaUI(Controller controller) {
+        this.controller = controller;
 
-    getContentPane().setBackground(BG);
+        setTitle("Effica");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-    // ===== TOP BAR =====
-    JPanel topBar = new JPanel(new BorderLayout());
-    topBar.setBackground(BG);
-    topBar.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        getContentPane().setBackground(BG);
 
-    JLabel title = new JLabel("Effica");
-    title.setForeground(TEXT);
-    title.setFont(new Font("SansSerif", Font.BOLD, 26));
+        // ===== TOP BAR =====
+        JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topBar.setBackground(BG);
+        topBar.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-    topBar.add(title, BorderLayout.WEST);
-    add(topBar, BorderLayout.NORTH);
+        JLabel title = new JLabel("Effica");
+        title.setForeground(TEXT);
+        title.setFont(new Font("SansSerif", Font.BOLD, 24));
 
-    // ===== TASK PANEL =====
-    taskPanel = new JPanel();
-    taskPanel.setLayout(new BoxLayout(taskPanel, BoxLayout.Y_AXIS));
-    taskPanel.setBackground(BG);
+        JButton addButton = new JButton("+ Add Task");
+        styleButton(addButton);
 
-    JScrollPane scrollPane = new JScrollPane(taskPanel);
-    scrollPane.setBorder(null);
-    scrollPane.getViewport().setBackground(BG);
+        String[] sortOptions = {"None", "Due Date", "Priority", "Estimated Time"};
+        JComboBox<String> sortBox = new JComboBox<>(sortOptions);
 
-    add(scrollPane, BorderLayout.CENTER);
+        addButton.addActionListener(e -> openTaskDialog());
 
-    // ===== BOTTOM INPUT BAR =====
-    JPanel inputBar = new JPanel(new BorderLayout());
-    inputBar.setBackground(BG);
-    inputBar.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        sortBox.addActionListener(e -> {
+            int i = sortBox.getSelectedIndex();
+            currentSort = switch (i) {
+                case 1 -> SortMode.DUE_DATE;
+                case 2 -> SortMode.CUSTOM_PRIORITY;
+                case 3 -> SortMode.ESTIMATED_TIME;
+                default -> SortMode.NONE;
+            };
+            refreshTasks();
+        });
 
-    taskInput = new JTextField();
-    styleField(taskInput);
+        topBar.add(title);
+        topBar.add(addButton);
+        topBar.add(sortBox);
 
-    JButton addButton = new JButton("Add Task");
-    styleButton(addButton);
+        add(topBar, BorderLayout.NORTH);
 
-    addButton.addActionListener(e -> {
-        String titleText = taskInput.getText().trim();
-        if (titleText.isEmpty()) return;
+        // ===== TASK PANEL =====
+        taskPanel = new JPanel();
+        taskPanel.setLayout(new BoxLayout(taskPanel, BoxLayout.Y_AXIS));
+        taskPanel.setBackground(BG);
 
-        LocalDateTime due = LocalDateTime.now().plusDays(1);
+        JScrollPane scrollPane = new JScrollPane(taskPanel);
+        scrollPane.setBorder(null);
+        scrollPane.getViewport().setBackground(BG);
 
-        controller.addTask(
-            titleText,
-            60,
-            "CS",
-            95.0,
-            due,
-            false,
-            3
-        );
+        add(scrollPane, BorderLayout.CENTER);
 
-        taskInput.setText("");
         refreshTasks();
+        setVisible(true);
+    }
+
+    // ================= TASK CREATION POPUP =================
+    private void openTaskDialog() {
+
+        JDialog dialog = new JDialog(this, "Create Task", true);
+        dialog.setSize(350, 300);
+        dialog.setLayout(new GridLayout(0, 1));
+
+        JTextField dueField = new JTextField();
+        dialog.add(new JLabel("Due Date (YYYY-MM-DDTHH:MM)"));
+        dialog.add(dueField);
+        JTextField title = new JTextField();
+        JTextField course = new JTextField();
+        JTextField mins = new JTextField();
+        JTextField grade = new JTextField();
+        JTextField priority = new JTextField();
+
+        dialog.add(new JLabel("Title"));
+        dialog.add(title);
+
+        dialog.add(new JLabel("Class"));
+        dialog.add(course);
+
+        dialog.add(new JLabel("Estimated Minutes"));
+        dialog.add(mins);
+
+        dialog.add(new JLabel("Grade"));
+        dialog.add(grade);
+
+        dialog.add(new JLabel("Priority"));
+        dialog.add(priority);
+
+        JButton save = new JButton("Save Task");
+
+        save.addActionListener(e -> {
+        try {
+            LocalDateTime due = LocalDateTime.parse(dueField.getText().trim());
+
+            controller.addTask(
+                title.getText(),
+                Integer.parseInt(mins.getText()),
+                course.getText(),
+                Double.parseDouble(grade.getText()),
+                due,
+                false,
+                Integer.parseInt(priority.getText())
+            );
+
+            dialog.dispose();
+            refreshTasks();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(dialog,
+                "Invalid input.\nUse format: 2026-06-01T23:59");
+        }
     });
 
-    inputBar.add(taskInput, BorderLayout.CENTER);
-    inputBar.add(addButton, BorderLayout.EAST);
+        dialog.add(save);
 
-    add(inputBar, BorderLayout.SOUTH);
-
-    refreshTasks();
-    setVisible(true);
-}
-
-private void refreshTasks() {
-    taskPanel.removeAll();
-
-    for (Task t : controller.getAllTasks()) {
-        taskPanel.add(createTaskCard(t));
-        taskPanel.add(Box.createVerticalStrut(10));
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
 
-    taskPanel.revalidate();
-    taskPanel.repaint();
-}
+    // ================= TASK RENDER =================
+    private void refreshTasks() {
+        taskPanel.removeAll();
 
-private JPanel createTaskCard(Task t) {
-    JPanel card = new RoundedPanel(20);
-    card.setLayout(new BorderLayout());
-    card.setBackground(CARD);
-    card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
-    card.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+        for (Task t : controller.getTasksSortedBy(currentSort)) {
+            taskPanel.add(createTaskCard(t));
+            taskPanel.add(Box.createVerticalStrut(10));
+        }
 
-    JLabel title = new JLabel(t.getTitle());
-    title.setForeground(TEXT);
-    title.setFont(new Font("SansSerif", Font.BOLD, 18));
-
-    JLabel info = new JLabel(
-        "Due: " + t.getDueDate() +
-        " | " + t.getEstimatedMins() + " min"
-    );
-    info.setForeground(new Color(180, 180, 180));
-
-    card.add(title, BorderLayout.NORTH);
-    card.add(info, BorderLayout.SOUTH);
-
-    return card;
-}
-
-private void styleField(JTextField field) {
-    field.setBackground(CARD);
-    field.setForeground(TEXT);
-    field.setCaretColor(TEXT);
-    field.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    field.setFont(new Font("SansSerif", Font.PLAIN, 14));
-}
-
-private void styleButton(JButton button) {
-    button.setBackground(ACCENT);
-    button.setForeground(Color.WHITE);
-    button.setFocusPainted(false);
-    button.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
-    button.setFont(new Font("SansSerif", Font.BOLD, 13));
-}
-
-// ===== Rounded Panel Class =====
-class RoundedPanel extends JPanel {
-    private int radius;
-
-    public RoundedPanel(int radius) {
-        this.radius = radius;
-        setOpaque(false);
+        taskPanel.revalidate();
+        taskPanel.repaint();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                             RenderingHints.VALUE_ANTIALIAS_ON);
+    private JPanel createTaskCard(Task t) {
 
-        g2.setColor(getBackground());
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+        JPanel card = new RoundedPanel(20);
+        card.setLayout(new BorderLayout());
+        card.setBackground(CARD);
+        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
+        card.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
-        super.paintComponent(g);
+        JLabel title = new JLabel(t.getTitle());
+        title.setForeground(TEXT);
+        title.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+        JLabel info = new JLabel(
+            t.getClassName() +
+            " | " +
+            t.getEstimatedMins() +
+            " min | Due: " +
+            t.getDueDate()
+        );
+
+        info.setForeground(new Color(180, 180, 180));
+
+        card.add(title, BorderLayout.NORTH);
+        card.add(info, BorderLayout.SOUTH);
+
+        return card;
     }
 
+    // ================= STYLING =================
+    private void styleButton(JButton button) {
+        button.setBackground(ACCENT);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
     }
 
+    // ================= ROUNDED PANEL =================
+    class RoundedPanel extends JPanel {
+        private int radius;
+
+        public RoundedPanel(int radius) {
+            this.radius = radius;
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                RenderingHints.VALUE_ANTIALIAS_ON);
+
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
+
+            super.paintComponent(g);
+        }
+    }
 }

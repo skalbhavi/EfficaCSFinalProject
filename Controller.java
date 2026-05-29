@@ -16,6 +16,10 @@ public class Controller {
         timer = new Timer(25, 5);
         calendar = new WeeklyCalendar(taskManager);
     }
+
+    public TaskManager getTaskManager() {
+        return taskManager;
+    }
     
     public void addTask(String title, int estimatedMins, String className, double grade, LocalDateTime dueDate, boolean status, int priority) {
         Task task = new Task(title, estimatedMins, className, grade, dueDate, status, priority);
