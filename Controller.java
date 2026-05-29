@@ -10,16 +10,23 @@ public class Controller {
     
     private TaskManager taskManager;
     private Timer timer;
+    private javax.swing.Timer swingTimer;
     private WeeklyCalendar calendar;
     private Task activeTask;
-    
+
     private final String API_KEY = "";
     private final String API_URL = "https://api.groq.com/openai/v1/chat/completions";
     
-    public Controller() {
+public Controller() {
         this.taskManager = new TaskManager();
         this.timer = new Timer(25, 5);
         this.calendar = new WeeklyCalendar(taskManager);
+
+        this.swingTimer = new javax.swing.Timer(1000, e -> {
+            timer.tick();
+        });
+
+        swingTimer.start();
     }
 
     public TaskManager getTaskManager() {
@@ -51,8 +58,8 @@ public class Controller {
         return taskManager.getTasksSortedBy(mode, currentTime);
     }
 
-    public void startPomodoro(int work, int breakMin) {
-        timer = new Timer(work, breakMin);
+    public void startPomodoro(int work, int rest) {
+        timer.reset();
         timer.start();
     }
 
@@ -61,9 +68,6 @@ public class Controller {
     }
 
     public Timer getTimer() {
-        if (timer == null) {
-            timer = new Timer(25, 5);
-        }
         return timer;
     }
 
