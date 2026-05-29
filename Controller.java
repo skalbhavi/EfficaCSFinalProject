@@ -1,15 +1,12 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-
 public class Controller {
     
     private TaskManager taskManager;
     private Timer timer;
     private WeeklyCalendar calendar;
-    private User currentUser;
-    private SortMode currentSortMode;
-    private String currentDate;
+    private Task activeTask;
     
     public Controller() {
         taskManager = new TaskManager();
@@ -24,39 +21,35 @@ public class Controller {
     public void addTask(String title, int estimatedMins, String className, double grade, LocalDateTime dueDate, boolean status, int priority) {
         Task task = new Task(title, estimatedMins, className, grade, dueDate, status, priority);
         taskManager.addTask(task);
-        timer = new Timer(25, 5);
     }
 
-
-    public boolean removeTask(long taskId) {
-        return taskManager.removeTask(taskId);
+    public boolean removeTask(long taskID) {
+        return taskManager.removeTask(taskID);
     }
 
-    public boolean editTask(long taskId, String newTitle, String newCourse, int newMinutes, String newDueDate, int newPriority) {
-        return taskManager.editTask(taskId, newTitle, newCourse, newMinutes, newDueDate, newPriority);
+    public boolean editTask(long taskId, String newTitle, String newCourse, int newMinutes, LocalDateTime newDueDate, double newGrade, int newPriority) {
+        return taskManager.editTask(taskId, newTitle, newCourse, newMinutes, newDueDate, newGrade, newPriority);
     }
 
-    public boolean markTaskComplete(long taskId) {
-        return taskManager.markComplete(taskId);
+    public boolean markTaskComplete(long taskID) {
+        return taskManager.markComplete(taskID);
     }
 
     public ArrayList<Task> getAllTasks() {
         return taskManager.getAllTasks();
     }
 
-    private Task activeTask;
-
     public void setActiveTask(Task task) {
-        this.activeTask = task;
+        activeTask = task;
     }
 
     public Task getActiveTask() {
         return activeTask;
     }
 
-    public ArrayList<Task> getTasksSortedBy(SortMode mode) {
-        return taskManager.getTasksSortedBy(mode);
-    }
+public ArrayList<Task> getTasksSortedBy(SortMode mode, String currentTime) {
+    return taskManager.getTasksSortedBy(mode, currentTime);
+}
 
     public void startPomodoro(int work, int breakMin) {
         timer = new Timer(work, breakMin);

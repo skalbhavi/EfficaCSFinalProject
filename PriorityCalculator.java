@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 
 public class PriorityCalculator {
 
-    /*
+    /*  SORT BY DUE DATE
     get current time
     get task due time
     hours until due = due time - current time
@@ -52,6 +52,22 @@ public class PriorityCalculator {
             return (int)(-1 * ((pastDue + 59) / 60));
         }
     }
+
+    /////////////////////////
+    
+    public static int gradePRTY(Task task) {
+        return (int) task.getGrade();
+    }
+
+    public static int timePRTY(Task task) {
+        return -1 * task.getEstimatedMins();
+    }
+
+    public static int customPRTY(Task task) {
+        return -1 * task.getPriority();
+    }
+
+    ////////////////////////////
 
     private static LocalDateTime makeDateTime(String dateText) {
         int year = Integer.parseInt(dateText.substring(0, 4));

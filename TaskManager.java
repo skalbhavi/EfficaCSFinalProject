@@ -1,7 +1,8 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Comparator;
-import java.util.Collections; 
 
 public class TaskManager {
     
@@ -40,7 +41,7 @@ public class TaskManager {
         return null;
     }
 
-    public boolean editTask(long taskID, String title, String course, int minutes, String dueDate, double grade) {
+    public boolean editTask(long taskID, String title, String course, int minutes, LocalDateTime dueDate, double grade, int priority) {
         Task task = findTaskById(taskID);
 
         if (task == null) {
@@ -52,6 +53,7 @@ public class TaskManager {
         task.setEstimatedMins(minutes);
         task.setDueDate(dueDate);
         task.setGrade(grade);
+        task.setPriority(priority);
 
         return true;
     }
@@ -111,7 +113,7 @@ public class TaskManager {
 
         return taskA.getDueDate().compareTo(taskB.getDueDate());
     }
-};
+        };
 
         PriorityQueue<Task> pq = new PriorityQueue<Task>(taskPriorityComparator);
 

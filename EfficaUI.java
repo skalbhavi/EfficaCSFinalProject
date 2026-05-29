@@ -7,7 +7,7 @@ public class EfficaUI extends JFrame {
     private Controller controller;
     private JPanel taskPanel;
 
-    private SortMode currentSort = SortMode.NONE;
+    private SortMode currentSort = SortMode.DUE_DATE;
 
     private final Color BG = new Color(18, 18, 18);
     private final Color CARD = new Color(32, 32, 32);
@@ -36,21 +36,30 @@ public class EfficaUI extends JFrame {
         JButton addButton = new JButton("+ Add Task");
         styleButton(addButton);
 
-        String[] sortOptions = {"None", "Due Date", "Priority", "Estimated Time"};
+        String[] sortOptions = {
+            "Due Date",
+            "Grade",
+            "Estimated Time",
+            "Custom Priority"
+        };
+        
         JComboBox<String> sortBox = new JComboBox<>(sortOptions);
 
         addButton.addActionListener(e -> openTaskDialog());
 
         sortBox.addActionListener(e -> {
-            int i = sortBox.getSelectedIndex();
-            currentSort = switch (i) {
-                case 1 -> SortMode.DUE_DATE;
-                case 2 -> SortMode.CUSTOM_PRIORITY;
-                case 3 -> SortMode.ESTIMATED_TIME;
-                default -> SortMode.NONE;
-            };
-            refreshTasks();
-        });
+    int i = sortBox.getSelectedIndex();
+
+    currentSort = switch (i) {
+        case 0 -> SortMode.DUE_DATE;
+        case 1 -> SortMode.GRADE;
+        case 2 -> SortMode.ESTIMATED_TIME;
+        case 3 -> SortMode.CUSTOM;
+        default -> SortMode.DUE_DATE;
+    };
+
+    refreshTasks();
+});
 
         topBar.add(title);
         topBar.add(addButton);
@@ -147,10 +156,14 @@ public class EfficaUI extends JFrame {
     }
 
     // ================= TASK RENDER =================
+    private String getTimeString() {
+        return LocalDateTime.now().toString().substring(0, 16);
+    }
+
     private void refreshTasks() {
         taskPanel.removeAll();
 
-        for (Task t : controller.getTasksSortedBy(currentSort)) {
+        for (Task t : controller.getTasksSortedBy(currentSort, getTimeString())) {
             taskPanel.add(createTaskCard(t));
             taskPanel.add(Box.createVerticalStrut(10));
         }
@@ -175,7 +188,11 @@ public class EfficaUI extends JFrame {
             t.getClassName() +
             " | " +
             t.getEstimatedMins() +
-            " min | Due: " +
+            " min | Grade: " +
+            t.getGrade() +
+            " | Priority: " +
+            t.getPriority() +
+            " | Due: " +
             t.getDueDate()
         );
 
