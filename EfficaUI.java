@@ -114,12 +114,12 @@ public class EfficaUI extends JFrame {
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
         card.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
-        JLabel title = new JLabel(t.getTitle());
+        JLabel title = new JLabel(t.getAssignmentName());
         title.setForeground(TEXT);
         title.setFont(new Font("SansSerif", Font.BOLD, 16));
 
         JLabel info = new JLabel(
-            t.getClassName() + " | " + t.getEstimatedMins() + " min | Due: " + t.getDueDate()
+            t.getClassGrade() + " | " + t.getEstimatedTime() + " min | Due: " + t.getDueDate()
         );
         info.setForeground(new Color(180, 180, 180));
 
@@ -160,7 +160,6 @@ public class EfficaUI extends JFrame {
                 controller.addTask(
                     title.getText(),
                     Integer.parseInt(mins.getText()),
-                    course.getText(),
                     Double.parseDouble(grade.getText()),
                     LocalDateTime.parse(dueField.getText().trim()),
                     false,

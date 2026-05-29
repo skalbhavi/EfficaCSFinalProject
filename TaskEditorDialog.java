@@ -39,7 +39,6 @@ public class TaskEditorDialog extends JDialog {
             result = new Task(
                 title.getText(),
                 Integer.parseInt(mins.getText()),
-                course.getText(),
                 Double.parseDouble(grade.getText()),
                 LocalDateTime.now().plusDays(1),
                 false,

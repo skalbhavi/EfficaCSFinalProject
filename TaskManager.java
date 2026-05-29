@@ -41,18 +41,17 @@ public class TaskManager {
         return null;
     }
 
-    public boolean editTask(long taskID, String title, String course, int minutes, LocalDateTime dueDate, double grade, int priority) {
+    public boolean editTask(long taskID, String title, int minutes, LocalDateTime dueDate, double grade, int priority) {
         Task task = findTaskById(taskID);
 
         if (task == null) {
             return false;
         }
 
-        task.setTitle(title);
-        task.setClassName(course);
-        task.setEstimatedMins(minutes);
+        task.setAssignmentName(title);
+        task.setEstimatedTime(minutes);
         task.setDueDate(dueDate);
-        task.setGrade(grade);
+        task.setClassGrade(grade);
         task.setPriority(priority);
 
         return true;
