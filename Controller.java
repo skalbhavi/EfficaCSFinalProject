@@ -32,7 +32,7 @@ public class Controller {
         return taskManager.removeTask(taskId);
     }
 
-    public boolean editTask(long taskId, String newTitle, String newCourse, int newMinutes, LocalDateTime newDueDate, int newPriority) {
+    public boolean editTask(long taskId, String newTitle, String newCourse, int newMinutes, String newDueDate, int newPriority) {
         return taskManager.editTask(taskId, newTitle, newCourse, newMinutes, newDueDate, newPriority);
     }
 
@@ -42,6 +42,16 @@ public class Controller {
 
     public ArrayList<Task> getAllTasks() {
         return taskManager.getAllTasks();
+    }
+
+    private Task activeTask;
+
+    public void setActiveTask(Task task) {
+        this.activeTask = task;
+    }
+
+    public Task getActiveTask() {
+        return activeTask;
     }
 
     public ArrayList<Task> getTasksSortedBy(SortMode mode) {
