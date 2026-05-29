@@ -129,9 +129,9 @@ public class EfficaUI extends JFrame {
         taskName.setFont(new Font("SansSerif", Font.BOLD, 16));
 
         JLabel info = new JLabel(
-            t.getClassGrade() + " | " + 
+            t.getDueDate().toString().substring(0,10) + " " + t.getDueDate().toString().substring(11,16) + 
             t.getEstimatedTime() + " min | Due: " + 
-            t.getDueDate().toString().substring(0,10) + " " + t.getDueDate().toString().substring(10,16)
+            "Class Grade: " + t.getClassGrade() + " | "
         );
         info.setForeground(new Color(180, 180, 180));
 
