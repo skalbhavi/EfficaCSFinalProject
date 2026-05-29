@@ -13,7 +13,7 @@ public class Controller {
     private WeeklyCalendar calendar;
     private Task activeTask;
     
-    private final String API_KEY = "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";
+    private final String API_KEY = "";
     private final String API_URL = "https://api.groq.com/openai/v1/chat/completions";
     
     public Controller() {
