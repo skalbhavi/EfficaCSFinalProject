@@ -11,7 +11,11 @@ public class Controller {
     private SortMode currentSortMode;
     private String currentDate;
     
-    
+    public Controller() {
+        taskManager = new TaskManager();
+        timer = new Timer(25, 5);
+        calendar = new WeeklyCalendar(taskManager);
+    }
     
     public void addTask(String title, int estimatedMins, String className, double grade, LocalDateTime dueDate, boolean status, int priority) {
         Task task = new Task(title, estimatedMins, className, grade, dueDate, status, priority);
@@ -20,15 +24,15 @@ public class Controller {
     }
 
 
-    public boolean removeTask(int taskId) {
+    public boolean removeTask(long taskId) {
         return taskManager.removeTask(taskId);
     }
 
-    public boolean editTask(int taskId, String newTitle, String newCourse, int newMinutes, LocalDateTime newDueDate, int newPriority) {
+    public boolean editTask(long taskId, String newTitle, String newCourse, int newMinutes, LocalDateTime newDueDate, int newPriority) {
         return taskManager.editTask(taskId, newTitle, newCourse, newMinutes, newDueDate, newPriority);
     }
 
-    public boolean markTaskComplete(int taskId) {
+    public boolean markTaskComplete(long taskId) {
         return taskManager.markComplete(taskId);
     }
 

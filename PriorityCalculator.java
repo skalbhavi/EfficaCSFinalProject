@@ -1,7 +1,5 @@
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.LocalDateTime;
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class PriorityCalculator {
 
@@ -42,16 +40,16 @@ public class PriorityCalculator {
     }
 
     public static int dueScore(Task task, String currentTime) {
-        LocalDateTime now = getTime(currentTime);
-        LocalDateTime due = getTime(task.getDueDate());
+        LocalDateTime now = makeDateTime(currentTime);
+        LocalDateTime due = task.getDueDate();
 
-        int untilDue = Duration.between(now, due).toMinutes();
+        long untilDue = Duration.between(now, due).toMinutes();
 
         if (untilDue >= 0) {
             return (int)(untilDue / 60); //floor hours remaining
         } else {
-            int pastDue = Math.abs(untilDue);
-            return -1 * ((pastDue + 59) / 60); //ceiling hours overdue
+            long pastDue = Math.abs(untilDue);
+            return (int)(-1 * ((pastDue + 59) / 60));
         }
     }
 

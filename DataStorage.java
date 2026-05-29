@@ -46,16 +46,17 @@ public class DataStorage {
     public static String taskToFileString(Task task) {
 
         return task.getTitle() + ";" +
-               task.getEstimatedMins() + ";" +
-               task.getClassName() + ";" +
-               task.getGrade() + ";" +
-               task.getDueDate() + ";" +
-               task.getStatus() + ";" +
-               task.getPriority();
+        task.getEstimatedMins() + ";" +
+        task.getClassName() + ";" +
+        task.getGrade() + ";" +
+        task.getDueDate() + ";" +
+        task.getStatus() + ";" +
+        task.getPriority() + ";" +
+        task.getID();
     }
 
     public static Task fileStringToTask(String line) {
-    
+
         String[] parts = line.split(";");
 
         String title = parts[0];
@@ -65,9 +66,15 @@ public class DataStorage {
         LocalDateTime dueDate = LocalDateTime.parse(parts[4]);
         boolean status = Boolean.parseBoolean(parts[5]);
         int priority = Integer.parseInt(parts[6]);
+        long ID = Long.parseLong(parts[7]);
 
-        return new Task(title, estimatedMins, className, grade, dueDate, status, priority);
-
-
+        return new Task(title,
+                        estimatedMins,
+                        className,
+                        grade,
+                        dueDate,
+                        status,
+                        priority,
+                        ID);
     }
 }

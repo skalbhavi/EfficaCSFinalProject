@@ -25,6 +25,25 @@ public class Task {
         this.priority = priority;
     }
 
+    public Task(String title,
+            int estimatedMins,
+            String className,
+            double grade,
+            LocalDateTime dueDate,
+            boolean status,
+            int priority,
+            long ID) {
+
+        this.title = title;
+        this.estimatedMins = estimatedMins;
+        this.className = className;
+        this.grade = grade;
+        this.dueDate = dueDate;
+        this.status = status;
+        this.priority = priority;
+        this.ID = ID;
+    }
+
     public String getTitle(){ return title;}
     public void setTitle(String title) {this.title = title;} 
 

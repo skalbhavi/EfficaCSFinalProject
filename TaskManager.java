@@ -28,7 +28,7 @@ public class TaskManager {
             }
         };
 
-        PriorityQueue<Task> pq = new PriorityQueue<Task>(taskPriorityComparator));
+        PriorityQueue<Task> pq = new PriorityQueue<Task>(taskPriorityComparator);
 
         for (Task task : tasks) {
             if (!task.getStatus()) {
@@ -61,11 +61,6 @@ public class TaskManager {
         return sortedTasks;
     }
 
-}
-
-
-
-/*
     public boolean removeTask(long taskID) {
         for (Task task : tasks) {
             if (task.getID() == taskID) {
@@ -94,7 +89,7 @@ public class TaskManager {
         return false;
     }
 
-    public boolean markComplete(int taskId) {
+    public boolean markComplete(long taskId) {
         for (Task task : tasks) {
             if (task.getID() == taskId) {
                 task.setStatus(true);
@@ -126,7 +121,7 @@ public class TaskManager {
 
     public ArrayList<Task> getTasksSortedBy(SortMode mode) {
         ArrayList<Task> copy = new ArrayList<Task>(tasks);
-        Comparator<Task> comparator = Comparator.getComparator(mode);
+        Comparator<Task> comparator = TaskComparator.getComparator(mode);
         Collections.sort(copy, comparator);
         return copy;
     }
@@ -140,4 +135,11 @@ public class TaskManager {
     public int size() {
         return tasks.size();
     }
+
+}
+
+
+
+/*
+    
 */
