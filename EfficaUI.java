@@ -130,7 +130,7 @@ public class EfficaUI extends JFrame {
 
         JLabel info = new JLabel(
             "Due: " + t.getDueDate().toString().substring(0,10) + " " + t.getDueDate().toString().substring(11,16) + 
-            t.getEstimatedTime() + " min | Class Grade: " + 
+            " | Estimated Time: " + t.getEstimatedTime() + " min | Class Grade: " + 
             t.getClassGrade()
         );
         info.setForeground(new Color(180, 180, 180));
