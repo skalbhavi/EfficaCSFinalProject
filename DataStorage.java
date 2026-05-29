@@ -60,7 +60,7 @@ public class DataStorage {
         String taskName = parts[0];
         LocalDateTime dueDate = LocalDateTime.parse(parts[1]);
         int estimatedTime = Integer.parseInt(parts[2]);
-        double classGrade = Double.parseDouble(parts[3]);
+        int classGrade = Integer.parseInt(parts[3]);
         boolean status = Boolean.parseBoolean(parts[4]);
         int priority = Integer.parseInt(parts[5]);
         long taskID = Long.parseLong(parts[6]);

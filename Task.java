@@ -4,13 +4,13 @@ public class Task {
 
     private String taskName; 
     private int estimatedTime; 
-    private double classGrade; 
+    private int classGrade; 
     private LocalDateTime dueDate; 
     private boolean status;
     private long taskID;
     private int priority;
 
-    public Task(String taskName, LocalDateTime dueDate, int estimatedTime, double classGrade, boolean status, int priority) {
+    public Task(String taskName, LocalDateTime dueDate, int estimatedTime, int classGrade, boolean status, int priority) {
         this.taskName = taskName; 
         this.dueDate = dueDate; 
         this.estimatedTime = estimatedTime; 
@@ -26,7 +26,7 @@ public class Task {
     public Task(String taskName,
             LocalDateTime dueDate,
             int estimatedTime,
-            double classGrade,
+            int classGrade,
             boolean status,
             int priority,
             long taskID) {
@@ -41,16 +41,16 @@ public class Task {
     }
 
     public String getTaskName(){ return taskName;}
-    public void setTaskName(String title) {this.taskName = title;} 
+    public void setTaskName(String taskName) {this.taskName = taskName;} 
 
     public LocalDateTime getDueDate() {return dueDate;}
     public void setDueDate(LocalDateTime dueDate) {this.dueDate = dueDate;}
 
     public int getEstimatedTime() {return estimatedTime;}
-    public void setEstimatedTime(int estimatedMins) {this.estimatedTime = estimatedMins;}
+    public void setEstimatedTime(int estimatedTime) {this.estimatedTime = estimatedTime;}
 
     public double getClassGrade() {return classGrade;}
-    public void setClassGrade(double grade) {this.classGrade = grade;}
+    public void setClassGrade(int classGrade) {this.classGrade = classGrade;}
 
     public boolean getStatus() {return status;}
     public void setStatus(boolean status) {this.status = status;}

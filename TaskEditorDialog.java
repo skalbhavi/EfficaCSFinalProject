@@ -36,7 +36,7 @@ public class TaskEditorDialog extends JDialog {
                 taskName.getText(),
                 LocalDateTime.now().plusDays(1),
                 Integer.parseInt(estimatedTime.getText()),
-                Double.parseDouble(classGrade.getText()),
+                Integer.parseInt(classGrade.getText()),
                 false,
                 Integer.parseInt(priority.getText())
             );

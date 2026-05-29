@@ -186,7 +186,7 @@ public class EfficaUI extends JFrame {
                     taskName.getText(),
                     LocalDateTime.parse(dueDate.getText().trim()),
                     Integer.parseInt(estimatedTime.getText()),
-                    Double.parseDouble(classGrade.getText()),
+                    Integer.parseInt(classGrade.getText()),
                     Integer.parseInt(priority.getText())
                 );
 
@@ -227,9 +227,9 @@ public class EfficaUI extends JFrame {
         dialog.add(dueDate);
         dialog.add(new JLabel(" Estimated Completion Time"));
         dialog.add(estimatedTime);
-        dialog.add(new JLabel(" Current Grade"));
+        dialog.add(new JLabel(" Current Class Grade (rounded %)"));
         dialog.add(classGrade);
-        dialog.add(new JLabel(" Priority (1-5)"));
+        dialog.add(new JLabel(" Priority (1 least ~ 5 most)"));
         dialog.add(priority);
 
         JButton save = new JButton("Save Task");
@@ -239,7 +239,7 @@ public class EfficaUI extends JFrame {
                     taskName.getText(),
                     LocalDateTime.parse(dueDate.getText().trim()),
                     Integer.parseInt(estimatedTime.getText()),
-                    Double.parseDouble(classGrade.getText()),
+                    Integer.parseInt(classGrade.getText()),
                     false,
                     Integer.parseInt(priority.getText())
                 );

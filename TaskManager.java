@@ -40,7 +40,7 @@ public class TaskManager {
         return null;
     }
 
-    public boolean editTask(long taskID, String taskName, LocalDateTime dueDate, int estimatedTime, double grade, int priority) {
+    public boolean editTask(long taskID, String taskName, LocalDateTime dueDate, int estimatedTime, int classGrade, int priority) {
         Task task = findTaskById(taskID);
 
         if (task == null) {
@@ -50,7 +50,7 @@ public class TaskManager {
         task.setTaskName(taskName);
         task.setDueDate(dueDate);
         task.setEstimatedTime(estimatedTime);
-        task.setClassGrade(grade);
+        task.setClassGrade(classGrade);
         task.setPriority(priority);
 
         return true;
