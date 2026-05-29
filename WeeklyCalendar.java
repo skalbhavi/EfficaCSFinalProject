@@ -1,95 +1,104 @@
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class WeeklyCalendar {
 
-    private TaskManager taskManager; 
+    private TaskManager taskManager;
 
     public WeeklyCalendar(TaskManager taskManager) {
-        this.taskManager = taskManager; 
+        this.taskManager = taskManager;
     }
 
+    private LocalDate parseDate(String dateText) {
+        if (dateText == null || dateText.isBlank()) return null;
 
-    // HANDLE DATES & TIMES
-    private static LocalDateTime makeDateTime(String dateText) {
-        // Basic YYYY-MM-DD is 10 characters
-        int year = Integer.parseInt(dateText.substring(0, 4));
-        int month = Integer.parseInt(dateText.substring(5, 7));
-        int day = Integer.parseInt(dateText.substring(8, 10));
-
-        int hour = 23;
-        int minute = 59;
-
-        // Only try to parse time if the string is long enough (e.g., ISO format)
-        if (dateText.length() >= 16) {
-            hour = Integer.parseInt(dateText.substring(11, 13));
-            minute = Integer.parseInt(dateText.substring(14, 16));
-        }
-
-        return LocalDateTime.of(year, month, day, hour, minute);
-    }
-
-
-    public ArrayList<Task> getTasksForDate(String date) {
-      
-        ArrayList<Task> targetResult = new ArrayList<Task>();
-        LocalDateTime targetDate = makeDateTime(date);
-
-        for (Task task: taskManager.getAllTasks()) {
-            LocalDateTime due = task.getDueDate(); 
-
-            if(due.getYear() == targetDate.getYear() && due.getMonthValue() == targetDate.getMonthValue() && due.getDayOfMonth() == targetDate.getDayOfMonth()) {
-                targetResult.add(task); 
+        try {
+            // Try the standard YYYY-MM-DD first
+            return LocalDate.parse(dateText);
+        } catch (DateTimeParseException e) {
+            try {
+                // Fallback: Manually split to handle single digits (e.g., 2026-5-2)
+                String[] parts = dateText.split("-");
+                if (parts.length == 3) {
+                    return LocalDate.of(
+                        Integer.parseInt(parts[0]), // Year
+                        Integer.parseInt(parts[1]), // Month
+                        Integer.parseInt(parts[2])  // Day
+                    );
+                }
+            } catch (Exception ex) {
+                return null; 
             }
         }
-        return targetResult; 
+        return null;
+    }
 
+    public ArrayList<Task> getTasksForDate(String date) {
+        ArrayList<Task> result = new ArrayList<>();
+        LocalDate target = parseDate(date);
 
+        if (target == null) {
+            return result;
+        }
+
+        for (Task task : taskManager.getAllTasks()) {
+            if (task.getDueDate() != null && task.getDueDate().toLocalDate().isEqual(target)) {
+                result.add(task);
+            }
+        }
+
+        return result;
     }
 
     public ArrayList<Task> getTasksForWeek(String startDate) {
+        ArrayList<Task> result = new ArrayList<>();
+        LocalDate start = parseDate(startDate);
 
-        ArrayList<Task> result = new ArrayList<Task>();
-        LocalDateTime start = makeDateTime(startDate);
-        LocalDateTime end = start.plusDays(7);
+        if (start == null) {
+            return result;
+        }
 
-        for(Task task: taskManager.getAllTasks()) {
-            LocalDateTime due = task.getDueDate(); 
-            boolean afterStart = due.isEqual(start) || due.isAfter(start); 
-            boolean beforeEnd = due.isBefore(end); 
+        LocalDate end = start.plusDays(7);
 
-            if(afterStart && beforeEnd) {
-                result.add(task); 
+        for (Task task : taskManager.getAllTasks()) {
+            if (task.getDueDate() == null) {
+                continue;
             }
 
+            LocalDate due = task.getDueDate().toLocalDate();
+            if ((due.isEqual(start) || due.isAfter(start)) && due.isBefore(end)) {
+                result.add(task);
+            }
         }
-        return result; 
+
+        return result;
     }
 
     public ArrayList<Task> getTodayTasks(String currentDate) {
-       
-        return getTasksForDate(currentDate); 
+        return getTasksForDate(currentDate);
     }
 
     public ArrayList<Task> getOverdueTasks(String currentDate) {
-    
-        ArrayList<Task> overdue = new ArrayList<Task>();
-        LocalDateTime current = makeDateTime(currentDate); 
+        ArrayList<Task> overdue = new ArrayList<>();
+        LocalDate current = parseDate(currentDate);
 
-        for(Task task : taskManager.getAllTasks()) {
-            LocalDateTime due = task.getDueDate(); 
+        if (current == null) {
+            return overdue;
+        }
 
-            if(due.isBefore(current) && !task.getStatus()) {
-                overdue.add(task); 
+        for (Task task : taskManager.getAllTasks()) {
+            if (task.getDueDate() != null &&
+                task.getDueDate().toLocalDate().isBefore(current) &&
+                !task.getStatus()) {
+                overdue.add(task);
             }
         }
-        return overdue; 
 
+        return overdue;
     }
 
     public int countTasksForDate(String date) {
-
-        return getTasksForDate(date).size(); 
+        return getTasksForDate(date).size();
     }
-
 }
