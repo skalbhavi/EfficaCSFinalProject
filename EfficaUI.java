@@ -37,13 +37,14 @@ public class EfficaUI extends JFrame {
         styleButton(addButton);
         addButton.addActionListener(e -> openTaskDialog());
 
-        String[] sortOptions = {"Due Date", "Grade", "Estimated Time", "Custom Priority"};
+        String[] sortOptions = {"Due Date", "Grade", "Estimated Time: Long First", "Estimated Time: Short First", "Custom Priority"};
+
         JComboBox<String> sortBox = new JComboBox<>(sortOptions);
         sortBox.addActionListener(e -> {
             int i = sortBox.getSelectedIndex();
             currentSort = switch (i) {
                 case 0 -> SortMode.DUE_DATE;
-                case 1 -> SortMode.GRADE;
+                case 1 -> SortMode.CLASS_GRADE;
                 case 2 -> SortMode.ESTIMATED_TIME_LONG_FIRST;
                 case 3 -> SortMode.ESTIMATED_TIME_SHORT_FIRST;
                 case 4 -> SortMode.CUSTOM;
@@ -111,8 +112,17 @@ public class EfficaUI extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setOpaque(false);
 
-        JLabel taskName = new JLabel(t.getTaskName());
-        taskName.setForeground(TEXT);
+        boolean overdue = PriorityCalculator.isOverdue(t, getTimeString()) && !t.getStatus();
+        String labelText = t.getTaskName();
+        if (overdue) {
+            labelText = "OVERDUE: " + labelText;
+        }
+        JLabel taskName = new JLabel(labelText);
+        if (overdue) {
+            taskName.setForeground(Color.RED);
+        } else {
+            taskName.setForeground(TEXT);
+        }
         taskName.setFont(new Font("SansSerif", Font.BOLD, 16));
 
         JLabel info = new JLabel(
@@ -167,7 +177,7 @@ public class EfficaUI extends JFrame {
         dialog.add(new JLabel("Due Date (YYYY-MM-DDTHH:MM)"));
         dialog.add(dueDate);
 
-        dialog.add(new JLabel("Estimated Completion Time"));
+        dialog.add(new JLabel("Estimated Completion Time (minutes)"));
         dialog.add(estimatedTime);
 
         dialog.add(new JLabel("Current Class Grade (rounded %)"));
@@ -226,7 +236,7 @@ public class EfficaUI extends JFrame {
         dialog.add(taskName);
         dialog.add(new JLabel(" Due Date (YYYY-MM-DDTHH:MM)"));
         dialog.add(dueDate);
-        dialog.add(new JLabel(" Estimated Completion Time"));
+        dialog.add(new JLabel(" Estimated Completion Time (minutes)"));
         dialog.add(estimatedTime);
         dialog.add(new JLabel(" Current Class Grade (rounded %)"));
         dialog.add(classGrade);

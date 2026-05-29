@@ -51,8 +51,19 @@ class CalendarPanel extends JPanel {
         ArrayList<Task> tasks = controller.getCalendar().getTasksForDate(date);
 
         for (Task t : tasks) {
-            JLabel taskLabel = new JLabel("• " + t.getTaskName());
-            taskLabel.setForeground(Color.LIGHT_GRAY);
+            boolean overdue = !t.getStatus() && t.getDueDate().isBefore(LocalDateTime.now());
+            String labelText;
+            if (overdue) {
+                labelText = "OVERDUE: " + t.getTaskName();
+            } else {
+                labelText = "• " + t.getTaskName();
+            }
+            JLabel taskLabel = new JLabel(labelText);
+            if (overdue) {
+                taskLabel.setForeground(Color.RED);
+            } else {
+                taskLabel.setForeground(Color.LIGHT_GRAY);
+            }
             taskLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
             taskLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             panel.add(taskLabel);

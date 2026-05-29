@@ -20,7 +20,7 @@ public class TaskEditorDialog extends JDialog {
         add(new JLabel("Task Name"));
         add(taskName);
 
-        add(new JLabel("Estimated Completion Time"));
+        add(new JLabel("Estimated Completion Time (minutes)"));
         add(estimatedTime);
 
         add(new JLabel("Current Class Grade"));

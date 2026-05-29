@@ -44,9 +44,9 @@ public class DataStorage {
     public static String taskToFileString(Task task) {
 
         return task.getTaskName() + ";" +
+        task.getDueDate() + ";" +
         task.getEstimatedTime() + ";" +
         task.getClassGrade() + ";" +
-        task.getDueDate() + ";" +
         task.getStatus() + ";" +
         task.getPriority() + ";" +
         task.getTaskID();

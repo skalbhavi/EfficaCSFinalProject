@@ -17,7 +17,7 @@ public class TaskComparator {
                     }
                 };
 
-            case GRADE:
+            case CLASS_GRADE:
                 return new Comparator<Task>() {
                     public int compare(Task a, Task b) {
                         return Integer.compare(PriorityCalculator.gradePRTY(a), PriorityCalculator.gradePRTY(b));
@@ -45,7 +45,7 @@ public class TaskComparator {
                         if (result != 0) {
                             return result;
                         }
-                        
+
                         return a.getDueDate().compareTo(b.getDueDate());
                     }
                 };

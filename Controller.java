@@ -82,7 +82,7 @@ public class Controller {
             context.append("Current tasks: ");
             
             for (Task t : taskManager.getAllTasks()) {
-                    context.append(String.format("[%s, Priority: %d, Grade: %.1f%%] ", t.getTaskName(), t.getPriority(), t.getClassGrade()));
+                    context.append(String.format("[%s, Priority: %d, Class Grade: %.1f%%] ", t.getTaskName(), t.getPriority(), t.getClassGrade()));
             }
             context.append(". User question: ").append(userPrompt);
 

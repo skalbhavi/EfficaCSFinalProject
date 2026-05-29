@@ -64,7 +64,7 @@ public class PriorityCalculator {
     }
 
     public static int shortTimePRTY(Task task) {
-        return -1 * task.getEstimatedTime();
+        return task.getEstimatedTime();
     }
 
     public static int customPRTY(Task task) {
