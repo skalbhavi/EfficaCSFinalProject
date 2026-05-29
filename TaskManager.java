@@ -1,8 +1,7 @@
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections; 
-import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Comparator;
+import java.util.Collections; 
 
 public class TaskManager {
     
@@ -16,17 +15,103 @@ public class TaskManager {
         tasks.add(task);
     }
 
+    public boolean removeTask(long taskID) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getID() == taskID) {
+                tasks.remove(i);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void removeTask(Task task) {
+        tasks.remove(task);
+    }
+
+    public Task findTaskById(long taskID) {
+        for (Task task : tasks) {
+            if (task.getID() == taskID) {
+                return task;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean editTask(long taskID, String title, String course, int minutes, String dueDate, double grade) {
+        Task task = findTaskById(taskID);
+
+        if (task == null) {
+            return false;
+        }
+
+        task.setTitle(title);
+        task.setClassName(course);
+        task.setEstimatedMins(minutes);
+        task.setDueDate(dueDate);
+        task.setGrade(grade);
+
+        return true;
+    }
+
+    public boolean markComplete(long taskID) {
+        Task task = findTaskById(taskID);
+
+        if (task == null) {
+            return false;
+        }
+
+        task.setStatus(true);
+        return true;
+    }
+
+    public ArrayList<Task> getAllTasks() {
+        return new ArrayList<Task>(tasks);
+    }
+
+    public ArrayList<Task> getComplete() {
+        ArrayList<Task> complete = new ArrayList<Task>();
+
+        for (Task task : tasks) {
+            if (task.getStatus()) {
+                complete.add(task);
+            }
+        }
+
+        return complete;
+    }
+
+    public ArrayList<Task> getIncomplete() {
+        ArrayList<Task> incomplete = new ArrayList<Task>();
+
+        for (Task task : tasks) {
+            if (!task.getStatus()) {
+                incomplete.add(task);
+            }
+        }
+
+        return incomplete;
+    }
+
+    //////////////
+
     public PriorityQueue<Task> makePriorityQueue(String currentTime) {
         Comparator<Task> taskPriorityComparator = new Comparator<Task>() {
 
-            @Override
-            public int compare(Task a, Task b) {
-                int priorityA = PriorityCalculator.duePRTY(a, currentTime);
-                int priorityB = PriorityCalculator.duePRTY(b, currentTime);
+    @Override
+    public int compare(Task taskA, Task taskB) {
+        int priorityA = PriorityCalculator.duePRTY(taskA, currentTime);
+        int priorityB = PriorityCalculator.duePRTY(taskB, currentTime);
 
-                return Integer.compare(priorityA, priorityB);
-            }
-        };
+        if (priorityA != priorityB) {
+            return Integer.compare(priorityA, priorityB);
+        }
+
+        return taskA.getDueDate().compareTo(taskB.getDueDate());
+    }
+};
 
         PriorityQueue<Task> pq = new PriorityQueue<Task>(taskPriorityComparator);
 
@@ -40,7 +125,9 @@ public class TaskManager {
 
     }
 
-    public Task getHighestPriorityTask(String currentTime) {
+    //////////////////////
+
+    public Task getTopPRTY(String currentTime) {
         PriorityQueue<Task> pq = makePriorityQueue(currentTime);
 
         if (pq.isEmpty()) {
@@ -50,7 +137,7 @@ public class TaskManager {
         return pq.peek();
     }
 
-    public ArrayList<Task> getTasksByPriority(String currentTime) {
+    public ArrayList<Task> getAllSortedTasks(String currentTime) {
         PriorityQueue<Task> pq = makePriorityQueue(currentTime);
         ArrayList<Task> sortedTasks = new ArrayList<Task>();
 
@@ -61,85 +148,35 @@ public class TaskManager {
         return sortedTasks;
     }
 
-    public boolean removeTask(long taskID) {
-        for (Task task : tasks) {
-            if (task.getID() == taskID) {
-                tasks.remove(task);
-                return true;
-            }
+    public ArrayList<Task> getTasksSortedBy(SortMode mode, String currentTime) {
+        if (mode == SortMode.PRIORITY_SCORE) {
+            return getAllSortedTasks(currentTime);
         }
-        return false;
-    }
 
-    public void removeTask(Task task) {
-        tasks.remove(task);
-    }
+        ArrayList<Task> copy = new ArrayList<Task>(tasks);
+        Comparator<Task> comparator = TaskComparator.getComparator(mode);
+        Collections.sort(copy, comparator);
 
-    public boolean editTask(long taskId, String title, String course, int minutes, LocalDateTime dueDate, int priority) {
-        for (Task task : tasks) {
-            if (task.getID() == taskId) {
-                task.setTitle(title);
-                task.setClassName(course);
-                task.setEstimatedMins(minutes);
-                task.setDueDate(dueDate);
-                task.setPriority(priority);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean markComplete(long taskId) {
-        for (Task task : tasks) {
-            if (task.getID() == taskId) {
-                task.setStatus(true);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public ArrayList<Task> getAllTasks() {
-        return tasks;
-    }
-
-    public ArrayList<Task> getIncompleteTasks() {
-        ArrayList<Task> inc = new ArrayList<Task>();
-        for (Task task : tasks) {
-            if (task.getStatus() == false) inc.add(task);
-        }
-        return inc;
-    }
-
-    public ArrayList<Task> getCompleteTasks() {
-        ArrayList<Task> comp = new ArrayList<Task>();
-        for (Task task : tasks) {
-            if (task.getStatus() == true) comp.add(task);
-        }
-        return comp;
+        return copy;
     }
 
     public ArrayList<Task> getTasksSortedBy(SortMode mode) {
         ArrayList<Task> copy = new ArrayList<Task>(tasks);
         Comparator<Task> comparator = TaskComparator.getComparator(mode);
         Collections.sort(copy, comparator);
+
         return copy;
     }
 
-    public void clearCompletedTasks() {
-        for (Task task : tasks) {
-            if (task.getStatus () == true) tasks.remove(task);
+    public void clearCompleted() {
+        for (int i = tasks.size()-1; i >= 0; i--) {
+            if (tasks.get(i).getStatus()) {
+                tasks.remove(i);
+            }
         }
     }
 
     public int size() {
         return tasks.size();
     }
-
 }
-
-
-
-/*
-    
-*/

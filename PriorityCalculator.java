@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 
 public class PriorityCalculator {
 
-        /*
+    /*
     get current time
     get task due time
     hours until due = due time - current time
@@ -19,7 +19,7 @@ public class PriorityCalculator {
 
     sort by priority (lower score = high priority)
         ascending order from overdue, due soon, due later
-     */
+    */
 
     public static int duePRTY(Task task, String currentDate) {
         return dueScore(task, currentDate);
