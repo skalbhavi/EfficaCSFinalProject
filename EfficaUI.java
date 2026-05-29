@@ -110,16 +110,16 @@ public class EfficaUI extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setOpaque(false);
 
-        JLabel title = new JLabel(t.getAssignmentName());
-        title.setForeground(TEXT);
-        title.setFont(new Font("SansSerif", Font.BOLD, 16));
+        JLabel taskName = new JLabel(t.getTaskName());
+        taskName.setForeground(TEXT);
+        taskName.setFont(new Font("SansSerif", Font.BOLD, 16));
 
         JLabel info = new JLabel(
             t.getClassGrade() + " | " + t.getEstimatedTime() + " min | Due: " + t.getDueDate()
         );
         info.setForeground(new Color(180, 180, 180));
 
-        infoPanel.add(title);
+        infoPanel.add(taskName);
         infoPanel.add(info);
         card.add(infoPanel, BorderLayout.CENTER);
 
@@ -129,7 +129,7 @@ public class EfficaUI extends JFrame {
 
         editItem.addActionListener(e -> openEditDialog(t));
         deleteItem.addActionListener(e -> {
-            controller.removeTask(t.getID());
+            controller.removeTask(t.getTaskID());
             refreshTasks();
         });
 
@@ -154,26 +154,26 @@ public class EfficaUI extends JFrame {
         dialog.setSize(350, 450);
         dialog.setLayout(new GridLayout(0, 1));
 
-        JTextField title = new JTextField(t.getAssignmentName());
-        JTextField mins = new JTextField("" + t.getEstimatedTime());
-        JTextField grade = new JTextField("" + t.getClassGrade());
+        JTextField taskName = new JTextField(t.getTaskName());
+        JTextField estimatedTime = new JTextField("" + t.getEstimatedTime());
+        JTextField classGrade = new JTextField("" + t.getClassGrade());
         JTextField priority = new JTextField("" + t.getPriority());
-        JTextField dueField = new JTextField(t.getDueDate().toString());
+        JTextField dueDate = new JTextField(t.getDueDate().toString());
 
-        dialog.add(new JLabel("Assignment Name"));
-        dialog.add(title);
-
-        dialog.add(new JLabel("Estimated Minutes"));
-        dialog.add(mins);
-
-        dialog.add(new JLabel("Current Grade (%)"));
-        dialog.add(grade);
-
-        dialog.add(new JLabel("Priority (1-5)"));
-        dialog.add(priority);
+        dialog.add(new JLabel("Task Name"));
+        dialog.add(taskName);
 
         dialog.add(new JLabel("Due Date (YYYY-MM-DDTHH:MM)"));
-        dialog.add(dueField);
+        dialog.add(dueDate);
+
+        dialog.add(new JLabel("Estimated Completion Time"));
+        dialog.add(estimatedTime);
+
+        dialog.add(new JLabel("Current Class Grade (rounded %)"));
+        dialog.add(classGrade);
+
+        dialog.add(new JLabel("Priority (1 least ~ 5 most)"));
+        dialog.add(priority);
 
         JButton save = new JButton("Save Changes");
 
@@ -182,11 +182,11 @@ public class EfficaUI extends JFrame {
             try {
 
                 controller.editTask(
-                    t.getID(),
-                    title.getText(),
-                    Integer.parseInt(mins.getText()),
-                    LocalDateTime.parse(dueField.getText().trim()),
-                    Double.parseDouble(grade.getText()),
+                    t.getTaskID(),
+                    taskName.getText(),
+                    LocalDateTime.parse(dueDate.getText().trim()),
+                    Integer.parseInt(estimatedTime.getText()),
+                    Double.parseDouble(classGrade.getText()),
                     Integer.parseInt(priority.getText())
                 );
 
@@ -215,23 +215,20 @@ public class EfficaUI extends JFrame {
         dialog.setSize(350, 400);
         dialog.setLayout(new GridLayout(0, 1));
 
-        JTextField dueField = new JTextField(LocalDateTime.now().toString().substring(0, 16));
-        JTextField title = new JTextField();
-        JTextField course = new JTextField();
-        JTextField mins = new JTextField();
-        JTextField grade = new JTextField();
+        JTextField taskName = new JTextField();
+        JTextField dueDate = new JTextField(LocalDateTime.now().toString().substring(0, 16));
+        JTextField estimatedTime = new JTextField();
+        JTextField classGrade = new JTextField();
         JTextField priority = new JTextField();
 
+        dialog.add(new JLabel(" Task Name"));
+        dialog.add(taskName);
         dialog.add(new JLabel(" Due Date (YYYY-MM-DDTHH:MM)"));
-        dialog.add(dueField);
-        dialog.add(new JLabel(" Assignment Name"));
-        dialog.add(title);
-        dialog.add(new JLabel(" Class Name"));
-        dialog.add(course);
-        dialog.add(new JLabel(" Estimated Minutes"));
-        dialog.add(mins);
+        dialog.add(dueDate);
+        dialog.add(new JLabel(" Estimated Completion Time"));
+        dialog.add(estimatedTime);
         dialog.add(new JLabel(" Current Grade"));
-        dialog.add(grade);
+        dialog.add(classGrade);
         dialog.add(new JLabel(" Priority (1-5)"));
         dialog.add(priority);
 
@@ -239,10 +236,10 @@ public class EfficaUI extends JFrame {
         save.addActionListener(e -> {
             try {
                 controller.addTask(
-                    title.getText(),
-                    Integer.parseInt(mins.getText()),
-                    Double.parseDouble(grade.getText()),
-                    LocalDateTime.parse(dueField.getText().trim()),
+                    taskName.getText(),
+                    LocalDateTime.parse(dueDate.getText().trim()),
+                    Integer.parseInt(estimatedTime.getText()),
+                    Double.parseDouble(classGrade.getText()),
                     false,
                     Integer.parseInt(priority.getText())
                 );

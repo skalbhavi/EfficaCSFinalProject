@@ -12,7 +12,6 @@ public class DataStorage {
             PrintWriter  writer = new PrintWriter(new File(filename)); 
             for (Task task: tasks) {
                 writer.println(taskToFileString(task));
-              
             } 
             writer.close(); 
         }
@@ -24,7 +23,6 @@ public class DataStorage {
     }
 
     public static ArrayList<Task> loadTasks(String filename) {
-       
         ArrayList<Task> tasks = new ArrayList<>(); 
 
         try {
@@ -45,34 +43,34 @@ public class DataStorage {
 
     public static String taskToFileString(Task task) {
 
-        return task.getAssignmentName() + ";" +
+        return task.getTaskName() + ";" +
         task.getEstimatedTime() + ";" +
         task.getClassGrade() + ";" +
         task.getDueDate() + ";" +
         task.getStatus() + ";" +
         task.getPriority() + ";" +
-        task.getID();
+        task.getTaskID();
+
     }
 
     public static Task fileStringToTask(String line) {
 
         String[] parts = line.split(";");
 
-        String title = parts[0];
-        int estimatedMins = Integer.parseInt(parts[1]);
-        String className = parts[2];
-        double grade = Double.parseDouble(parts[3]);
-        LocalDateTime dueDate = LocalDateTime.parse(parts[4]);
-        boolean status = Boolean.parseBoolean(parts[5]);
-        int priority = Integer.parseInt(parts[6]);
-        long ID = Long.parseLong(parts[7]);
+        String taskName = parts[0];
+        LocalDateTime dueDate = LocalDateTime.parse(parts[1]);
+        int estimatedTime = Integer.parseInt(parts[2]);
+        double classGrade = Double.parseDouble(parts[3]);
+        boolean status = Boolean.parseBoolean(parts[4]);
+        int priority = Integer.parseInt(parts[5]);
+        long taskID = Long.parseLong(parts[6]);
 
-        return new Task(title,
-                        estimatedMins,
-                        grade,
+        return new Task(taskName,
                         dueDate,
+                        estimatedTime,
+                        classGrade,
                         status,
                         priority,
-                        ID);
+                        taskID);
     }
 }

@@ -26,8 +26,8 @@ public class Controller {
         return taskManager;
     }
     
-    public void addTask(String title, int estimatedMins, double grade, LocalDateTime dueDate, boolean status, int priority) {
-        Task task = new Task(title, estimatedMins, grade, dueDate, status, priority);
+    public void addTask(String taskName, LocalDateTime dueDate, int estimatedMins, double classGrade, boolean status, int priority) {
+        Task task = new Task(taskName, dueDate, estimatedMins, classGrade, status, priority);
         taskManager.addTask(task);
     }
 
@@ -35,8 +35,8 @@ public class Controller {
         return taskManager.removeTask(taskID);
     }
 
-    public boolean editTask(long taskId, String newTitle, int newMinutes, LocalDateTime newDueDate, double newGrade, int newPriority) {
-        return taskManager.editTask(taskId, newTitle, newMinutes, newDueDate, newGrade, newPriority);
+    public boolean editTask(long taskId, String newTaskName, LocalDateTime newDueDate, int newMinutes, double newGrade, int newPriority) {
+        return taskManager.editTask(taskId, newTaskName, newDueDate, newMinutes, newGrade, newPriority);
     }
 
     public boolean markTaskComplete(long taskID) {
@@ -82,7 +82,7 @@ public class Controller {
             context.append("Current tasks: ");
             
             for (Task t : taskManager.getAllTasks()) {
-                    context.append(String.format("[%s, Priority: %d, Grade: %.1f%%] ", t.getAssignmentName(), t.getPriority(), t.getClassGrade()));
+                    context.append(String.format("[%s, Priority: %d, Grade: %.1f%%] ", t.getTaskName(), t.getPriority(), t.getClassGrade()));
             }
             context.append(". User question: ").append(userPrompt);
 

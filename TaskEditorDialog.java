@@ -12,23 +12,19 @@ public class TaskEditorDialog extends JDialog {
         setSize(350, 300);
         setLayout(new GridLayout(0, 1));
 
-        JTextField title = new JTextField();
-        JTextField course = new JTextField();
-        JTextField mins = new JTextField();
-        JTextField grade = new JTextField();
+        JTextField taskName = new JTextField();
+        JTextField estimatedTime = new JTextField();
+        JTextField classGrade = new JTextField();
         JTextField priority = new JTextField();
 
-        add(new JLabel("Title"));
-        add(title);
+        add(new JLabel("Task Name"));
+        add(taskName);
 
-        add(new JLabel("Class"));
-        add(course);
+        add(new JLabel("Estimated Completion Time"));
+        add(estimatedTime);
 
-        add(new JLabel("Minutes"));
-        add(mins);
-
-        add(new JLabel("Grade"));
-        add(grade);
+        add(new JLabel("Current Class Grade"));
+        add(classGrade);
 
         add(new JLabel("Priority"));
         add(priority);
@@ -37,10 +33,10 @@ public class TaskEditorDialog extends JDialog {
 
         save.addActionListener(e -> {
             result = new Task(
-                title.getText(),
-                Integer.parseInt(mins.getText()),
-                Double.parseDouble(grade.getText()),
+                taskName.getText(),
                 LocalDateTime.now().plusDays(1),
+                Integer.parseInt(estimatedTime.getText()),
+                Double.parseDouble(classGrade.getText()),
                 false,
                 Integer.parseInt(priority.getText())
             );

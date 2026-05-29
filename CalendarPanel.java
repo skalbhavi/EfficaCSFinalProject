@@ -51,7 +51,7 @@ class CalendarPanel extends JPanel {
         ArrayList<Task> tasks = controller.getCalendar().getTasksForDate(date);
 
         for (Task t : tasks) {
-            JLabel taskLabel = new JLabel("• " + t.getAssignmentName());
+            JLabel taskLabel = new JLabel("• " + t.getTaskName());
             taskLabel.setForeground(Color.LIGHT_GRAY);
             taskLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
             taskLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

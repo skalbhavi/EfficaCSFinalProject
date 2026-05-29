@@ -1,6 +1,5 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Comparator;
 
@@ -18,7 +17,7 @@ public class TaskManager {
 
     public boolean removeTask(long taskID) {
         for (int i = 0; i < tasks.size(); i++) {
-            if (tasks.get(i).getID() == taskID) {
+            if (tasks.get(i).getTaskID() == taskID) {
                 tasks.remove(i);
                 return true;
             }
@@ -33,7 +32,7 @@ public class TaskManager {
 
     public Task findTaskById(long taskID) {
         for (Task task : tasks) {
-            if (task.getID() == taskID) {
+            if (task.getTaskID() == taskID) {
                 return task;
             }
         }
@@ -41,16 +40,16 @@ public class TaskManager {
         return null;
     }
 
-    public boolean editTask(long taskID, String title, int minutes, LocalDateTime dueDate, double grade, int priority) {
+    public boolean editTask(long taskID, String taskName, LocalDateTime dueDate, int estimatedTime, double grade, int priority) {
         Task task = findTaskById(taskID);
 
         if (task == null) {
             return false;
         }
 
-        task.setAssignmentName(title);
-        task.setEstimatedTime(minutes);
+        task.setTaskName(taskName);
         task.setDueDate(dueDate);
+        task.setEstimatedTime(estimatedTime);
         task.setClassGrade(grade);
         task.setPriority(priority);
 

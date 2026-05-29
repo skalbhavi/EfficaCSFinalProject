@@ -2,65 +2,65 @@ import java.time.LocalDateTime;
 
 public class Task {
 
-    private String assignmentName; 
+    private String taskName; 
     private int estimatedTime; 
-    private double ClassGrade; 
+    private double classGrade; 
     private LocalDateTime dueDate; 
     private boolean status;
-    private long ID;
+    private long taskID;
     private int priority;
 
-    public Task(String name, int estimatedMins, double grade, LocalDateTime dueDate, boolean status, int priority) {
-        this.assignmentName = name; 
-        this.estimatedTime = estimatedMins; 
-        this.ClassGrade = grade; 
+    public Task(String taskName, LocalDateTime dueDate, int estimatedTime, double classGrade, boolean status, int priority) {
+        this.taskName = taskName; 
         this.dueDate = dueDate; 
+        this.estimatedTime = estimatedTime; 
+        this.classGrade = classGrade; 
         this.status = status; 
-        ID = 0;
+        taskID = 0;
         for (int i = 0; i < 10; i++) {
-            ID = ID * 10 + (int)(Math.random()*10);
+            taskID = taskID * 10 + (int)(Math.random()*10);
         }
         this.priority = priority;
     }
 
-    public Task(String title,
-            int estimatedMins,
-            double classGrade,
+    public Task(String taskName,
             LocalDateTime dueDate,
+            int estimatedTime,
+            double classGrade,
             boolean status,
             int priority,
-            long ID) {
+            long taskID) {
 
-        this.assignmentName = title;
-        this.estimatedTime = estimatedMins;
-        this.ClassGrade = classGrade;
+        this.taskName = taskName;
+        this.classGrade = classGrade;
+        this.estimatedTime = estimatedTime;
         this.dueDate = dueDate;
         this.status = status;
         this.priority = priority;
-        this.ID = ID;
+        this.taskID = taskID;
     }
 
-    public String getAssignmentName(){ return assignmentName;}
-    public void setAssignmentName(String title) {this.assignmentName = title;} 
+    public String getTaskName(){ return taskName;}
+    public void setTaskName(String title) {this.taskName = title;} 
+
+    public LocalDateTime getDueDate() {return dueDate;}
+    public void setDueDate(LocalDateTime dueDate) {this.dueDate = dueDate;}
 
     public int getEstimatedTime() {return estimatedTime;}
     public void setEstimatedTime(int estimatedMins) {this.estimatedTime = estimatedMins;}
 
-    public double getClassGrade() {return ClassGrade;}
-    public void setClassGrade(double grade) {this.ClassGrade = grade;}
-
-    public LocalDateTime getDueDate() {return dueDate;}
-    public void setDueDate(LocalDateTime dueDate) {this.dueDate = dueDate;}
+    public double getClassGrade() {return classGrade;}
+    public void setClassGrade(double grade) {this.classGrade = grade;}
 
     public boolean getStatus() {return status;}
     public void setStatus(boolean status) {this.status = status;}
 
     public String toString() {
-        return assignmentName  + " | Estimated Time: " + estimatedTime + " | Due: " + dueDate + "| Status: " + status ; 
+        return taskName + " | Due: " + dueDate  + " | Estimated Time: " + estimatedTime + "| Status: " + status ; 
     }
 
-    public long getID() {
-        return ID;
+    public long getTaskID() {
+        return taskID;
     }
 
     public int getPriority() {
@@ -70,7 +70,4 @@ public class Task {
     public void setPriority(int m) {
         this.priority = m;
     }
-
-
-
 }
