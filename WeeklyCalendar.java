@@ -12,6 +12,7 @@ public class WeeklyCalendar {
 
     // HANDLE DATES & TIMES
     private static LocalDateTime makeDateTime(String dateText) {
+        // Basic YYYY-MM-DD is 10 characters
         int year = Integer.parseInt(dateText.substring(0, 4));
         int month = Integer.parseInt(dateText.substring(5, 7));
         int day = Integer.parseInt(dateText.substring(8, 10));
@@ -19,13 +20,13 @@ public class WeeklyCalendar {
         int hour = 23;
         int minute = 59;
 
+        // Only try to parse time if the string is long enough (e.g., ISO format)
         if (dateText.length() >= 16) {
             hour = Integer.parseInt(dateText.substring(11, 13));
             minute = Integer.parseInt(dateText.substring(14, 16));
         }
 
         return LocalDateTime.of(year, month, day, hour, minute);
-
     }
 
 

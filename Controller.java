@@ -57,7 +57,20 @@ public class Controller {
         return taskManager.getTasksSortedBy(mode);
     }
 
+    public void startPomodoro(int work, int breakMin) {
+        timer = new Timer(work, breakMin);
+        timer.start();
+    }
+
+    public WeeklyCalendar getCalendar() {
+    return calendar;
+}
+
+    // Ensure the timer is never null to avoid NullPointerExceptions in PomodoroPanel
     public Timer getTimer() {
+        if (timer == null) {
+            timer = new Timer(25, 5);
+        }
         return timer;
     }
 }

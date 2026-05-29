@@ -58,6 +58,10 @@ public class Timer {
         return onBreak;
     }
 
+    public String getStatusLabel() {
+        return onBreak ? "Break Time!" : "Focusing...";
+    }
+
     public String getFormattedTime() {
         int minutes = remainingSeconds / 60;
         int seconds = remainingSeconds % 60;

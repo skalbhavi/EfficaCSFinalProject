@@ -68,11 +68,22 @@ public class EfficaUI extends JFrame {
         scrollPane.setBorder(null);
         scrollPane.getViewport().setBackground(BG);
 
-        add(scrollPane, BorderLayout.CENTER);
+        // === tabs (new)
 
-        refreshTasks();
-        setVisible(true);
+        JTabbedPane tabs = new JTabbedPane();
+        tabs.addTab("Tasks", scrollPane);
+
+        // POMODORO TAB (only shows if class exists)
+        tabs.addTab("Pomodoro", new PomodoroPanel(controller));
+
+        // CALENDAR TAB (only shows if class exists)
+        tabs.addTab("Calendar", new CalendarPanel(controller));
+
+        // ADD TO FRAME
+        add(tabs, BorderLayout.CENTER);
+
     }
+
 
     // ================= TASK CREATION POPUP =================
     private void openTaskDialog() {
