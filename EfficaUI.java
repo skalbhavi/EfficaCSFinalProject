@@ -14,7 +14,7 @@ public class EfficaUI extends JFrame {
     private final Color BG = new Color(248, 245, 252);
     private final Color CARD = new Color(58, 48, 74);
     private final Color ACCENT = new Color(200, 190, 220);
-    private final Color TEXT = new Color(58, 48, 74);
+    private final Color TEXT = new Color(235, 228, 245);
 
     public EfficaUI(Controller controller) {
         this.controller = controller;
@@ -257,7 +257,7 @@ public class EfficaUI extends JFrame {
 
     private void styleButton(JButton button) {
         button.setBackground(ACCENT);
-        button.setForeground(Color.BLACK);
+        button.setForeground(new Color(58, 48, 74));
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
     }
