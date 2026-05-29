@@ -99,22 +99,8 @@ public class TaskManager {
 
     //////////////
 
-    public PriorityQueue<Task> makePriorityQueue(String currentTime) {
-        Comparator<Task> taskPriorityComparator = new Comparator<Task>() {
-
-    @Override
-    public int compare(Task taskA, Task taskB) {
-        int priorityA = PriorityCalculator.duePRTY(taskA, currentTime);
-        int priorityB = PriorityCalculator.duePRTY(taskB, currentTime);
-
-        if (priorityA != priorityB) {
-            return Integer.compare(priorityA, priorityB);
-        }
-
-        return taskA.getDueDate().compareTo(taskB.getDueDate());
-    }
-        };
-
+    public PriorityQueue<Task> makePriorityQueue(SortMode mode, String currentTime) {
+        Comparator<Task> taskPriorityComparator = TaskComparator.getComparator(mode, currentTime);
         PriorityQueue<Task> pq = new PriorityQueue<Task>(taskPriorityComparator);
 
         for (Task task : tasks) {
@@ -124,13 +110,12 @@ public class TaskManager {
         }
 
         return pq;
-
     }
 
     //////////////////////
 
-    public Task getTopPRTY(String currentTime) {
-        PriorityQueue<Task> pq = makePriorityQueue(currentTime);
+    public Task getTopPRTY(SortMode mode, String currentTime) {
+        PriorityQueue<Task> pq = makePriorityQueue(mode, currentTime);
 
         if (pq.isEmpty()) {
             return null;
@@ -139,8 +124,8 @@ public class TaskManager {
         return pq.peek();
     }
 
-    public ArrayList<Task> getAllSortedTasks(String currentTime) {
-        PriorityQueue<Task> pq = makePriorityQueue(currentTime);
+    public ArrayList<Task> getAllSortedTasks(SortMode mode, String currentTime) {
+        PriorityQueue<Task> pq = makePriorityQueue(mode, currentTime);
         ArrayList<Task> sortedTasks = new ArrayList<Task>();
 
         while (!pq.isEmpty()) {
@@ -151,27 +136,11 @@ public class TaskManager {
     }
 
     public ArrayList<Task> getTasksSortedBy(SortMode mode, String currentTime) {
-        if (mode == SortMode.PRIORITY_SCORE) {
-            return getAllSortedTasks(currentTime);
-        }
-
-        ArrayList<Task> copy = new ArrayList<Task>(tasks);
-        Comparator<Task> comparator = TaskComparator.getComparator(mode);
-        Collections.sort(copy, comparator);
-
-        return copy;
-    }
-
-    public ArrayList<Task> getTasksSortedBy(SortMode mode) {
-        ArrayList<Task> copy = new ArrayList<Task>(tasks);
-        Comparator<Task> comparator = TaskComparator.getComparator(mode);
-        Collections.sort(copy, comparator);
-
-        return copy;
+        return getAllSortedTasks(mode, currentTime);
     }
 
     public void clearCompleted() {
-        for (int i = tasks.size()-1; i >= 0; i--) {
+        for (int i = tasks.size() - 1; i >= 0; i--) {
             if (tasks.get(i).getStatus()) {
                 tasks.remove(i);
             }
