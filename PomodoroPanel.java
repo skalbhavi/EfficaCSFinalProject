@@ -7,8 +7,6 @@ class PomodoroPanel extends JPanel {
     private JLabel taskLabel;
     private JLabel timeLabel;
 
-    private javax.swing.Timer swingTimer;
-
     public PomodoroPanel(Controller controller) {
         this.controller = controller;
 
@@ -23,34 +21,43 @@ class PomodoroPanel extends JPanel {
         timeLabel.setForeground(Color.WHITE);
         timeLabel.setFont(new Font("SansSerif", Font.BOLD, 40));
 
-        JButton start = new JButton("Start");
-        JButton pause = new JButton("Pause");
+        new javax.swing.Timer(500, e -> {
+            Timer t = controller.getTimer();
 
-        start.addActionListener(e -> {
-            controller.startPomodoro(25, 5);
-
-            swingTimer = new javax.swing.Timer(1000, ev -> {
-                Timer t = controller.getTimer();
-                if (t == null) return;
-
-                t.tick();
+            if (t != null) {
                 timeLabel.setText(t.getFormattedTime());
 
                 Task active = controller.getActiveTask();
+
                 if (active != null) {
                     taskLabel.setText("Working on: " + active.getTaskName());
+                } else {
+                    taskLabel.setText("No active task");
                 }
-            });
+            }
+        }).start();
 
-            swingTimer.start();
+        JButton start = new JButton("Start");
+        JButton pause = new JButton("Pause");
+        JButton resume = new JButton("Resume");
+
+        start.addActionListener(e -> {
+            controller.startPomodoro(25, 5);
         });
 
         pause.addActionListener(e -> {
-            if (controller.getTimer() != null) {
-                controller.getTimer().pause();
+            Timer t = controller.getTimer();
+
+            if (t != null) {
+                t.pause();
             }
-            if (swingTimer != null) {
-                swingTimer.stop();
+        });
+
+        resume.addActionListener(e -> {
+            Timer t = controller.getTimer();
+
+            if (t != null) {
+                t.start();
             }
         });
 
@@ -69,6 +76,7 @@ class PomodoroPanel extends JPanel {
         buttons.setBackground(new Color(18, 18, 18));
         buttons.add(start);
         buttons.add(pause);
+        buttons.add(resume);
 
         add(center, BorderLayout.CENTER);
         add(buttons, BorderLayout.SOUTH);
