@@ -4,6 +4,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
+/**
+ * Manages communication with the AI assistant by sending user prompts
+ * and task information to the OpenAI API. 
+ * The AI can analyze a user's tasks to provide productivity recommendations. 
+ */
 
 public class AIManager {
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
@@ -12,6 +17,15 @@ public class AIManager {
     public AIManager(String apiKey) {
         this.apiKey = apiKey;
     }
+
+    /**
+     * Sends a user question & task information to the AI assistant
+     * and returns the generated response 
+     * 
+     * @param userPrompt
+     * @param tasks
+     * @return the AI generated response, or an error message if the request fails
+     */
 
     public String askAI(String userPrompt, ArrayList<Task> tasks) {
         try {

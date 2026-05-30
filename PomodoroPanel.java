@@ -1,12 +1,23 @@
 import java.awt.*;
 import javax.swing.*;
 
+/**
+ * Provides a Pomodoro timer panel for the application
+ * Displays the current task, remaining time, and controls for 
+ * starting, pausing, & resuming the productivity timer.
+ */
+
 class PomodoroPanel extends JPanel {
 
     private Controller controller;
     private JLabel taskLabel;
     private JLabel timeLabel;
 
+    /**
+     * Creates a Pomodoro panel connected to the application 
+     * controller
+     * @param controller
+     */
     public PomodoroPanel(Controller controller) {
         this.controller = controller;
 

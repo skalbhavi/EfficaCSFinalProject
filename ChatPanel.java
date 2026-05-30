@@ -1,11 +1,22 @@
 import java.awt.*;
 import javax.swing.*;
 
+/**
+ * Provides the interface that lets users to communicate 
+ * with Effica AI. 
+ * The user messages are sent to the AI assistant, and responses
+ * are displayed within the chat window. 
+ */
+
 public class ChatPanel extends JPanel {
     private JTextArea chatArea;
     private JTextField inputField;
     private Controller controller;
 
+    /**
+     * Creates a chat panel connected to the application's controller
+     * @param controller
+     */
     public ChatPanel(Controller controller) {
         this.controller = controller;
         setLayout(new BorderLayout());
@@ -41,6 +52,10 @@ public class ChatPanel extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Sends the user's message to Effica AI & displays 
+     * the AI generated response in the chat window. 
+     */
     private void sendMessage() {
         String msg = inputField.getText().trim();
         if (msg.isEmpty()) return;

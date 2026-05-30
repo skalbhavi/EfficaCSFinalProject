@@ -2,10 +2,20 @@ import java.awt.*;
 import java.time.LocalDateTime;
 import javax.swing.*;
 
+
+/**
+ * Provides a dialog window for creating & editing tasks.
+ * Users can enter task information and use them within task manager.
+ * 
+ */
 public class TaskEditorDialog extends JDialog {
 
     private Task result;
-
+    
+    /**
+     * Creates a modal dialog for entering task information
+     * @param parent
+     */
     public TaskEditorDialog(JFrame parent) {
         super(parent, "Task Editor", true);
 
@@ -46,6 +56,10 @@ public class TaskEditorDialog extends JDialog {
         add(save);
     }
 
+    /**
+     * Displays the dialog & returns the task entered by the user. 
+     * @return
+     */
     public Task showDialog() {
         setVisible(true);
         return result;
