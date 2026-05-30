@@ -1,7 +1,20 @@
 import java.util.Comparator;
 
-public class TaskComparator {
+/**
+ * Generates comparators used to sort tasks based on
+ * different priority & scheduling strategies. 
+ * The comparator returns based on the sortmode selected
+ * to be used. 
+ */
 
+public class TaskComparator {
+    /**
+     * Return a comparator for task objects based on the
+     * specified sorting mode. 
+     * @param mode
+     * @param currentTime
+     * @return a comparator that sorts tasks according to the selected mode
+     */
     public static Comparator<Task> getComparator(SortMode mode, String currentTime) {
         switch (mode) {
             case DUE_DATE:

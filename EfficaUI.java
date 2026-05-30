@@ -2,6 +2,14 @@ import java.awt.*;
 import java.time.LocalDateTime;
 import javax.swing.*;
 
+/**
+ * main user interface for the effica application
+ * Is a hub for task management, Pomodoro timer, AI
+ * assistant, & calendar views within a tab based
+ * interface
+ * Acts as the main front end connecting the features
+ */
+
 public class EfficaUI extends JFrame {
 
     private Controller controller;
