@@ -4,13 +4,13 @@ public class Task {
 
     private String taskName; 
     private int estimatedTime; 
-    private int classGrade; 
+    private double classGrade; 
     private LocalDateTime dueDate; 
     private boolean status;
     private long taskID;
     private int priority;
 
-    public Task(String taskName, LocalDateTime dueDate, int estimatedTime, int classGrade, boolean status, int priority) {
+    public Task(String taskName, LocalDateTime dueDate, int estimatedTime, double classGrade, boolean status, int priority) {
         this.taskName = taskName; 
         this.dueDate = dueDate; 
         this.estimatedTime = estimatedTime; 
@@ -49,8 +49,8 @@ public class Task {
     public int getEstimatedTime() {return estimatedTime;}
     public void setEstimatedTime(int estimatedTime) {this.estimatedTime = estimatedTime;}
 
-    public int getClassGrade() {return classGrade;}
-    public void setClassGrade(int classGrade) {this.classGrade = classGrade;}
+    public double  getClassGrade() {return classGrade;}
+    public void setClassGrade(double classGrade) {this.classGrade = classGrade;}
 
     public boolean getStatus() {return status;}
     public void setStatus(boolean status) {this.status = status;}
