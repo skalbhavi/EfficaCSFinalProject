@@ -1,5 +1,11 @@
 import java.time.LocalDateTime;  
 
+
+/**
+ * A task is created, storing information on its name, due date, estimated time completion, associated
+ *  class grade, completion status, priority, & task ID 
+ */
+
 public class Task {
 
     private String taskName; 
@@ -10,6 +16,17 @@ public class Task {
     private long taskID;
     private int priority;
 
+   /**
+    * Creates a new task & generates an unique Task ID 
+    * 
+    * @param taskName
+    * @param dueDate
+    * @param estimatedTime
+    * @param classGrade
+    * @param status
+    * @param priority
+    */
+  
     public Task(String taskName, LocalDateTime dueDate, int estimatedTime, double classGrade, boolean status, int priority) {
         this.taskName = taskName; 
         this.dueDate = dueDate; 
@@ -22,6 +39,18 @@ public class Task {
         }
         this.priority = priority;
     }
+
+    /**
+     * Creates a task using an existing Task ID 
+     * 
+     * @param taskName
+     * @param dueDate
+     * @param estimatedTime
+     * @param classGrade
+     * @param status
+     * @param priority
+     * @param taskID
+     */
 
     public Task(String taskName,
             LocalDateTime dueDate,
@@ -40,6 +69,10 @@ public class Task {
         this.taskID = taskID;
     }
 
+    /** 
+     * Getter & setter methods for each parameter
+     */
+
     public String getTaskName(){ return taskName;}
     public void setTaskName(String taskName) {this.taskName = taskName;} 
 
@@ -55,19 +88,21 @@ public class Task {
     public boolean getStatus() {return status;}
     public void setStatus(boolean status) {this.status = status;}
 
-    public String toString() {
+    public long getTaskID() {return taskID;}
+
+    public int getPriority() {return priority;}
+    
+    public void setPriority(int m) {this.priority = m;}
+    
+    /**
+     * Returns the task as a string
+     * @return a string formatted with the correct information 
+     */
+    
+    @Override
+    public String toString() { 
         return taskName + " | Due: " + dueDate  + " | Estimated Time: " + estimatedTime + "| Status: " + status ; 
     }
 
-    public long getTaskID() {
-        return taskID;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-    
-    public void setPriority(int m) {
-        this.priority = m;
-    }
+   
 }
