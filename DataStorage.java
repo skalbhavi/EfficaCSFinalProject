@@ -5,8 +5,17 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
+/**
+ * Task information is saved to files & loaded from files, 
+ * allowing users to preserve tasks between sessions. 
+ */
 public class DataStorage {
+
+    /**
+     * Saves a list of tasks to a file 
+     * @param tasks
+     * @param filename
+     */
     public static void saveTasks(ArrayList<Task> tasks, String filename) {
         try {
             PrintWriter  writer = new PrintWriter(new File(filename)); 
@@ -21,6 +30,12 @@ public class DataStorage {
 
         }
     }
+
+    /**
+     * Loads tasks to a file
+     * @param filename
+     * @return
+     */
 
     public static ArrayList<Task> loadTasks(String filename) {
         ArrayList<Task> tasks = new ArrayList<>(); 
@@ -41,6 +56,11 @@ public class DataStorage {
         return tasks; 
     }
 
+    /**
+     * Converts a task into a string format
+     * @param task
+     * @return
+     */
     public static String taskToFileString(Task task) {
 
         return task.getTaskName() + ";" +
@@ -53,6 +73,11 @@ public class DataStorage {
 
     }
 
+    /**
+     * Converts a stored string back into a Task object
+     * @param line
+     * @return
+     */
     public static Task fileStringToTask(String line) {
 
         String[] parts = line.split(";");

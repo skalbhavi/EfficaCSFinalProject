@@ -3,10 +3,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.*;
 
+/**
+ * Displays the 7 day calendar view of tasks 
+ * Tasks are organized by due date and overdue tasks are 
+ * highlighted for the user. 
+ */
+
 class CalendarPanel extends JPanel {
 
     private Controller controller;
 
+    /** Creates a calender panel linked to the application's controller
+     * @param controller 
+     */
     public CalendarPanel(Controller controller) {
         this.controller = controller;
 
@@ -15,6 +24,11 @@ class CalendarPanel extends JPanel {
 
         refreshCalendar();
     }
+
+    /**
+     * Refreshes the calendar display by rebuilding the 7 day view
+     * and updating task information
+     */
 
     public void refreshCalendar() {
         this.removeAll();
@@ -29,6 +43,12 @@ class CalendarPanel extends JPanel {
         this.revalidate();
         this.repaint();
     }
+
+    /**
+     * Creates a panel displaying all tasks due on a specific day
+     * @param day
+     * @return a panel containing the day's tasks 
+     */
 
     private JPanel createDayPanel(LocalDateTime day) {
         JPanel panel = new JPanel();
