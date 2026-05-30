@@ -48,8 +48,8 @@ class CalendarPanel extends JPanel {
                 day.getMonthValue(),
                 day.getDayOfMonth());
 
-        ArrayList<Task> tasks = controller.getCalendar().getTasksForDate(date);
-
+        ArrayList<Task> tasks = filterTasksForDate(controller.getCalendarTasks(), date);
+        
         for (Task t : tasks) {
             boolean overdue = !t.getStatus() && t.getDueDate().isBefore(LocalDateTime.now());
             String labelText;
@@ -71,5 +71,22 @@ class CalendarPanel extends JPanel {
         }
 
         return panel;
+    }
+
+    private ArrayList<Task> filterTasksForDate(ArrayList<Task> tasks, String date) {
+        ArrayList<Task> result = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDueDate() == null) continue;
+            String taskDate = String.format("%d-%02d-%02d",
+                    task.getDueDate().getYear(),
+                    task.getDueDate().getMonthValue(),
+                    task.getDueDate().getDayOfMonth());
+
+            if (taskDate.equals(date)) {
+                result.add(task);
+            }
+        }
+
+        return result;
     }
 }

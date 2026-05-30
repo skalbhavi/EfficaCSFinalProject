@@ -37,7 +37,7 @@ public class EfficaUI extends JFrame {
         styleButton(addButton);
         addButton.addActionListener(e -> openTaskDialog());
 
-        String[] sortOptions = {"Due Date", "Grade", "Estimated Time: Long First", "Estimated Time: Short First", "Custom Priority"};
+        String[] sortOptions = {"Due Date", "Class Grade", "Estimated Time: Long First", "Estimated Time: Short First", "Custom Priority"};
 
         JComboBox<String> sortBox = new JComboBox<>(sortOptions);
         sortBox.addActionListener(e -> {
