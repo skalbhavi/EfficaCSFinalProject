@@ -6,7 +6,11 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-
+/**
+ * Central controller for the Effica application
+ * Is the bridge between user interface, networking layer, 
+ * timer system, calendar, & AI assistant
+ */
 public class Controller {
     
     private Timer timer;
@@ -18,13 +22,20 @@ public class Controller {
 
     private final String API_KEY = "";
     private final String API_URL = "https://api.groq.com/openai/v1/chat/completions";
-    
+
+    /**
+     * Creates a controller without user authentication 
+     */
     public Controller() {
         this.timer = new Timer(25, 5);
         this.swingTimer = new javax.swing.Timer(1000, e -> timer.tick());
         swingTimer.start();
     }
     
+    /**
+     * Creates a controller for a logged in user
+     * @param username
+     */
     public Controller(String username) {
         this.currentUser = username;
         this.network = new NetworkClient(username);
@@ -34,6 +45,15 @@ public class Controller {
         swingTimer.start();
     }
 
+    /**
+     * Adds a task to the server
+     * @param taskName
+     * @param dueDate
+     * @param estimatedTime
+     * @param classGrade
+     * @param status
+     * @param priority
+     */
     public void addTask(String taskName,
                         LocalDateTime dueDate,
                         int estimatedTime,
@@ -47,6 +67,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Deletes a task on the server
+     * @param taskID
+     * @return
+     */
     public boolean removeTask(long taskID) {
         try {
             network.deleteTask(taskID);
@@ -57,6 +82,16 @@ public class Controller {
         }
     }
 
+    /**
+     * Updates an existing task on the server
+     * @param taskID
+     * @param newTaskName
+     * @param newDueDate
+     * @param newEstimatedTime
+     * @param newClassGrade
+     * @param newPriority
+     * @return
+     */
     public boolean editTask(long taskID,
                         String newTaskName,
                         LocalDateTime newDueDate,
@@ -77,10 +112,19 @@ public class Controller {
         }
     }
 
+    /**
+     * Marks taste as complete
+     * @param taskID
+     * @return false 
+     */
     public boolean markTaskComplete(long taskID) {
         return false;
     }
 
+    /**
+     * Retreives all tasks belonging to the current user
+     * @return list of tasks or empty list if request fails
+     */
     public ArrayList<Task> getAllTasks() {
         try {
             return network.getMyTasks();
@@ -90,6 +134,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Retrieves & sorts tasks according to the selected
+     * sorting mode
+     * @param mode
+     * @param currentTime
+     * @return
+     */
     public ArrayList<Task> getTasksSortedBy(SortMode mode, String currentTime) {
         try {
             ArrayList<Task> tasks = network.getMyTasks();
@@ -102,10 +153,17 @@ public class Controller {
         }
     }
 
+    /**
+     * Starts the Pomodoro timer session 
+     * @param work
+     * @param rest
+     */
     public void startPomodoro(int work, int rest) {
         timer.reset();
         timer.start();
     }
+
+    // getter & setter methods 
 
     public NetworkClient getNetwork() {
         return network;
@@ -136,6 +194,12 @@ public class Controller {
         return activeTask;
     }
 
+    /**
+     * Sends the user's prompt and current task context to the
+     * AI Model
+     * @param userPrompt
+     * @return AI generated response or error msg
+     */
     public String getAIAdvice(String userPrompt) {
         try {
             StringBuilder context = new StringBuilder();
@@ -176,6 +240,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Parses & extracts the response content from AI JSON result
+     * @param json
+     * @return
+     */
     private String parseAIResponse(String json) {
         try {
             String cleanJson = json.replace("\\n", "\n");

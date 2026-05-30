@@ -5,10 +5,24 @@ import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * HTTP server that takes care of user authentication &
+ * task management requests for the application. 
+ * Provides endpoints for creating, editing, deleting, &
+ * retreiving tasks as well as user login registration. 
+ */
+
 public class TaskServer {
 
     private static ArrayList<User> users = new ArrayList<>();
 
+    /**
+     * Starts the HTTP server & initializes API endpoints
+     * for user & task operations 
+     * 
+     * @param args (not used)
+     * @throws Exception (if server fails to start)
+     */
     public static void main(String[] args) throws Exception {
 
         users.add(new User("aarthi", "1234"));
@@ -31,6 +45,11 @@ public class TaskServer {
         server.start();
     }
 
+    /**
+     * Registers a new user if the username has not already been used
+     * @param ex
+     * @throws IOException
+     */
     private static void register(HttpExchange ex) throws IOException {
 
         String body = read(ex);
@@ -48,6 +67,11 @@ public class TaskServer {
         write(ex, "SUCCESS");
     }
 
+    /**
+     * Authenticates a user by using their username & password
+     * @param ex
+     * @throws IOException
+     */
     private static void login(HttpExchange ex) throws IOException {
 
         String body = read(ex);
@@ -67,6 +91,11 @@ public class TaskServer {
         write(ex, "FAIL");
     }
 
+    /**
+     * Adds a new task to a user's task manager
+     * @param ex
+     * @throws IOException
+     */
     private static void addTask(HttpExchange ex) throws IOException {
 
         String body = read(ex);
@@ -94,6 +123,11 @@ public class TaskServer {
         write(ex, "OK");
     }
 
+    /**
+     * Returns all tasks for a specific user
+     * @param ex
+     * @throws IOException
+     */
     private static void getTasks(HttpExchange ex) throws IOException {
 
         String query = ex.getRequestURI().getQuery();
@@ -109,6 +143,12 @@ public class TaskServer {
         write(ex, serialize(u.getTaskManager().getAllTasks()));
     }
 
+    /**
+     * Returns all tasks across all users for the calendar display 
+     * @param ex
+     * @throws IOException
+     */
+
     private static void getCalendar(HttpExchange ex) throws IOException {
 
         ArrayList<Task> all = new ArrayList<>();
@@ -120,6 +160,11 @@ public class TaskServer {
         write(ex, serialize(all));
     }
 
+    /**
+     * Deletes a task for a given user by task ID 
+     * @param ex
+     * @throws IOException
+     */
     private static void deleteTask(HttpExchange ex) throws IOException {
 
         String body = read(ex);
@@ -137,6 +182,11 @@ public class TaskServer {
         write(ex, "OK");
     }
 
+    /**
+     * Updates an existing task's details for the user
+     * @param ex
+     * @throws IOException
+     */
     private static void editTask(HttpExchange ex) throws IOException {
 
         String body = read(ex);
@@ -170,6 +220,11 @@ public class TaskServer {
         write(ex, "OK");
     }
 
+    /**
+     * Searches for a user via username 
+     * @param username
+     * @return the matched User object; null if not found
+     */
     private static User findUser(String username) {
         for (User u : users) {
             if (u.getUsername().equals(username)) {
@@ -179,6 +234,12 @@ public class TaskServer {
         return null;
     }
 
+    /**
+     * Reads the full request body from an HTTP exchange
+     * @param ex
+     * @return
+     * @throws IOException
+     */
     private static String read(HttpExchange ex) throws IOException {
 
         BufferedReader br = new BufferedReader(
@@ -194,6 +255,12 @@ public class TaskServer {
         return sb.toString();
     }
 
+    /**
+     * Sends a plain text response to the client
+     * @param ex
+     * @param response
+     * @throws IOException
+     */
     private static void write(HttpExchange ex, String response)
             throws IOException {
 
@@ -203,6 +270,12 @@ public class TaskServer {
         os.write(response.getBytes());
         os.close();
     }
+
+    /**
+     * Converts a list of tasks into a string format 
+     * @param tasks
+     * @return
+     */
 
     private static String serialize(ArrayList<Task> tasks) {
 

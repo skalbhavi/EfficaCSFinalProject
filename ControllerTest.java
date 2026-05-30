@@ -1,5 +1,11 @@
 import java.time.LocalDateTime;
 
+/**
+ * Test for the controller class. 
+ * Creates sample users and tasks to verify that 
+ * all methods are working properly
+ */
+
 public class ControllerTest {
 
     public static void main(String[] args) {

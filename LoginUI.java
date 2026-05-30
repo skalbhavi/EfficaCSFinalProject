@@ -1,12 +1,22 @@
 import java.awt.*;
 import javax.swing.*;
 
+/**
+ * Login interface for the Effica application
+ * Allows users to log in or to create a new account (register)
+ * On a successful login, the main application UI launches
+ */
+
 public class LoginUI extends JFrame {
 
     private JTextField usernameField;
     private JPasswordField passwordField;
     private NetworkClient client;
 
+    /**
+     * Constructs login window & initializes UI components
+     * Includes the username/password input fields
+     */
     public LoginUI() {
 
         client = new NetworkClient("");
@@ -34,6 +44,10 @@ public class LoginUI extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Attempts to log in the user using the provided credentials
+     * If successful, opens the main application window
+     */
     private void login() {
         try {
             String user = usernameField.getText().trim();
@@ -53,6 +67,9 @@ public class LoginUI extends JFrame {
         }
     }
 
+    /**
+     * Registers a new user account using the provided credentials
+     */
     private void register() {
         try {
             String user = usernameField.getText().trim();
@@ -67,6 +84,10 @@ public class LoginUI extends JFrame {
         }
     }
 
+    /**
+     * Opens the main Effica application after successful login 
+     * @param username
+     */
     private void openMain(String username) {
         Controller controller = new Controller(username);
         new EfficaUI(controller);

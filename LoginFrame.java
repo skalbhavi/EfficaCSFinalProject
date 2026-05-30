@@ -1,8 +1,17 @@
 import java.awt.*;
 import javax.swing.*;
 
+/**
+ * Login window for the Effica application
+ * Frame allows users to enter username & password
+ * If sucessful, main Effica UI is launched, 
+ * otherwise error msg displayed
+ */
 public class LoginFrame extends JFrame {
 
+    /**
+     * Constructs the Login window & initializes all UI components
+     */
     public LoginFrame() {
 
         setTitle("Login - Effica");

@@ -24,6 +24,12 @@ public class EfficaUI extends JFrame {
     private final Color ACCENT = new Color(200, 190, 220);
     private final Color TEXT = new Color(235, 228, 245);
 
+    /**
+     * Initializes the main application window & sets up the UI
+     * components 
+     * Includes task management, calendar view, Pomodoro timer, & AI assistant
+     * @param controller
+     */
     public EfficaUI(Controller controller) {
         this.controller = controller;
 
