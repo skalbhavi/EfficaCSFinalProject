@@ -16,7 +16,7 @@ public class Controller {
     private NetworkClient network;
     private String currentUser;
 
-    private final String API_KEY = "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";
+    private final String API_KEY = "";
     private final String API_URL = "https://api.groq.com/openai/v1/chat/completions";
     
     public Controller() {
